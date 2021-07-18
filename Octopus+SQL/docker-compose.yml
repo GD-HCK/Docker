@@ -2,6 +2,11 @@ version: '3'
 services:
    db:
     image: ${SQL_IMAGE}
+    deploy:
+      resources:
+        limits:
+          cpus: 0.5
+          memory: 1g #limits RAM to 1GB
     environment:
       SA_PASSWORD: ${SA_PASSWORD}
       ACCEPT_EULA: ${ACCEPT_EULA}
@@ -15,6 +20,11 @@ services:
       - sqlvolume:/var/opt/mssql
    octopus-server:
     image: octopusdeploy/octopusdeploy:${OCTOPUS_SERVER_TAG}
+    deploy:
+      resources:
+        limits:
+          cpus: 0.5
+          memory: 1g #limits RAM to 1GB
     privileged: ${PRIVILEGED}
     user: ${USER}
     environment:
