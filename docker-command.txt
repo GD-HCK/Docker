@@ -1,4 +1,13 @@
+#Initial Setup
 #docker run --interactive --detach --name OctopusDeploy --publish 8080:8080 --env ACCEPT_EULA="Y" --env DB_CONNECTION_STRING="..." octopusdeploy/octopusdeploy:2021.1.7508
-docker pull octopusdeploy/octopusdeploy:2021.1.7508
 docker pull mcr.microsoft.com/mssql/server:2019-latest
+#amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image
 docker-compose --project-name Octopus --env-file .\octopus.env up -d
+
+
+#to backup db container
+#docker db_container_name backup_container_name
+docker commit octopus_db_1 octopus_db_18_07_2021
+
+#for subsequent restores
+#amend the .env file to use the octopus_db image
