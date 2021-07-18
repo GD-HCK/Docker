@@ -5,8 +5,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: 0.5
-          memory: 1g #limits RAM to 1GB
+          cpus: 1
+          memory: 1.5g #limits RAM to 1GB
     environment:
       SA_PASSWORD: ${SA_PASSWORD}
       ACCEPT_EULA: ${ACCEPT_EULA}
