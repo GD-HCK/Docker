@@ -1,8 +1,8 @@
 # OctopusContainer
 
 # Initial Setup
- * #### Amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image
-  docker-compose --project-name Octopus --env-file "Full_Path_To_File\octopus.env" up -d
+  #### Amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image
+  -> docker-compose --project-name Octopus --env-file "Full_Path_To_File\octopus.env" up -d
 
 # Steps to backup Container's filesystem only -- no volumes
  1. ## Backing up container to Dock Hub
@@ -23,24 +23,30 @@
         docker push gdhck/octopus_db:18072021
 
     5. ### Remove Obsolete Images (i.e. backup just created)
-        #### Syntax: docker rmi image_name_or_id
-        docker images #this shows a list of images and the IDs
-        docker rmi 258a147eb1c2
+        1.  #### Show a list of images and the IDs
+            docker images
+        2.  #### Remove images
+            #### Syntax: docker rmi image_name_or_id
+            docker rmi 258a147eb1c2
 
     6. ### Image Restore
         #### Amend the .env file to use the octopus_db image just pushed (i.e. SQL_IMAGE=gdhck/octopusserver:latest) and then run
         docker-compose --project-name Octopus --env-file .\octopus.env up -d
 
-2. ## Backing up image from container to File
-    1. #### Show a list of containers and the IDs
-        docker ps 
-    2. #### Save container
-        #### Syntax: docker save -o <zip_file_name.tar> <container_name>
+2. ## Backing up image to File
+    1.  #### Show a list of images and the IDs
+        docker images
+    2.  #### Save Image
+        #### Syntax: docker save -o <zip_file_name.tar> <image_name_or_id:tag>
         #### Remember to compress the below files using 7zip, the -o switch saved the output to a file
-        docker export -o C:\test\octopus_container.tar octopus
+        docker save -o C:\test\octopus_image.tar octopusdeploy/octopusdeploy:latest
+    3.  #### Import Image
+        #### Syntax: docker load -i path_to_tar_file
+        docker load -i C:\test\octopus_db.tar
+        docker load -i C:\test\octopus_web.tar
 
 # Steps to backup Container's filesystem & volumes -- disaster recovery
-1. ## Backup Image And Volume
+1. ## Backup Container
     1. #### Show a list of containers and the IDs
         docker ps
     2. #### Export container & volumes to a file
@@ -49,17 +55,16 @@
         docker export -o C:\test\octopus_db.tar octopus_db_1
         docker export -o C:\test\octopus_web.tar octopus_octopus-server_1
 
-2. ## Import Container
-    1. #### Load containers
-        #### Syntax: docker load -i path_to_tar_file
-        docker load -i C:\test\octopus_db.tar
-        docker load -i C:\test\octopus_web.tar
+2. ## Import Containers (will appear as images)
+    #### Syntax: docker import <path_to_tar_file> <container_name:tag>
+    docker import C:\test\octopus_db.tar gdhck/octopus_db:latest
+    docker import C:\test\octopus_web.tar gdhck/octopus_web:latest
 
 3. ## Restore The Docker Composed Container
-    1. #### Since the composed containered images are already configured, we will run the compose command excluding the .env file
-        docker-compose --project-name Octopus
+    #### Amend the .env file to include the newly imported containers (will appear as images)
+    docker-compose --project-name Octopus --env-file "Full_Path_To_File\octopus.env" up -d
 
-## Check Container Resource Utilisation
+# Check Container Resource Utilisation
 docker stats
 
 # Troubloshooting
