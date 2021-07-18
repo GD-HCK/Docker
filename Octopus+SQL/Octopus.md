@@ -32,3 +32,18 @@ docker-compose --project-name Octopus --env-file .\octopus.env up -d
 
 # Check Container Resource Utilisation
 docker stats
+
+# Troubloshooting
+#check if there are existing images volumes preventing octopus to work properly
+docker volume ls -f dangling=true # List dangling volumes
+#delete unnecessary volume
+docker volume rm $(docker volume ls -f dangling=true -q) # Remove dangling volumes
+<# Example of volumes created by Octopus
+d790ca76f11adce6a72523e1e88c62efd6c25d1e602092a8a55d0871c839be03
+faf5b8014dc9115828dceffaad77cc5bc8741e10d68da1e6f169a409fbb2f070
+octopus_artifacts
+octopus_cache
+octopus_import
+octopus_repository
+octopus_sqlvolume
+octopus_taskLogs>
