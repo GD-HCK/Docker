@@ -5,6 +5,7 @@
 #amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image
 docker-compose --project-name Octopus --env-file "Full_Path_To_File\octopus.env" up -d
 
+# IF CHANGING IMAGE FILESYSTEM CONTENT YOU NEED ONLY A BACKUP OF THE CONTAINER
 # Create Image From Container
 #docker db_container_name backup_container_name:tag
 docker commit octopus_db_1 octopus_db:18072021
@@ -29,6 +30,24 @@ docker rmi 258a147eb1c2
 # For Subsequent Restores
 #amend the .env file to use the octopus_db image just pushed and then run
 docker-compose --project-name Octopus --env-file .\octopus.env up -d
+
+# BACKUP CONTAINER, IMAGE AND VOLUMES FOR DISASTER RECOVERY
+# Backup Image And Volume
+docker images # this shows a list of images and the IDs
+#docker save -o zip_file_name.tar image_id # save docker image+volumes
+Set-Location -Path Path_to_location
+#remember to compress the below files using 7zip, the -o switch saved the output to a file
+docker save -o octopus_db.tar 39n983n84098
+docker save -o octopus_web.tar 2x3m798347c7
+
+# Import Image And Volume
+#docker load -i path_to_file
+docker load -i .\octopus_db.tar
+docker load -i .\octopus_web.tar
+
+# Restore The Docker Composed Container
+#Since the composed containered images are already configured, we will run the compose command excluding the .env file
+docker-compose --project-name Octopus
 
 # Check Container Resource Utilisation
 docker stats
