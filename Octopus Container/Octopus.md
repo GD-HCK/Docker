@@ -100,7 +100,10 @@
 
         3. #### Start the composed container
              * Start SQL container
-             * Start WEB container 
+             * Start WEB container
+
+# Perform Automated Tasks
+## Checkout the task automation scripts for octopus containers within [Automation](./Automation)
        
 
 # Check Container Resource Utilisation
