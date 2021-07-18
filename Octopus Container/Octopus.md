@@ -1,14 +1,14 @@
 # OctopusContainer
 
 # Initial Setup
-  ##### * Amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image
+ * #### Amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image
   docker-compose --project-name Octopus --env-file "Full_Path_To_File\octopus.env" up -d
 
 # Steps to backup Container's filesystem only -- no volumes
- * ## Backing up container to Dock Hub
- 1. ### Create Image From Container
-    ##### Syntax: docker db_container_name backup_container_name:tag
-    docker commit octopus_db_1 octopus_db:18072021
+ 1. ## Backing up container to Dock Hub
+  1. ### Create Image From Container
+     #### Syntax: docker db_container_name backup_container_name:tag
+     docker commit octopus_db_1 octopus_db:18072021
 
  2. ### Push Image To Docker Hub. If Using MFA, Create An Access Token At [Docker Security Settings](https://hub.docker.com/settings/security)
     docker login -u username
@@ -32,12 +32,12 @@
     docker-compose --project-name Octopus --env-file .\octopus.env up -d
 
 * ## Backing up image from container to File
-  1. #### Show a list of containers and the IDs
-     docker ps 
-  2. #### Save container
-     #### Syntax: docker save -o <zip_file_name.tar> <container_name>
-     #### Remember to compress the below files using 7zip, the -o switch saved the output to a file
-     docker export -o C:\test\octopus_container.tar octopus
+ 1. #### Show a list of containers and the IDs
+    docker ps 
+ 2. #### Save container
+    #### Syntax: docker save -o <zip_file_name.tar> <container_name>
+    #### Remember to compress the below files using 7zip, the -o switch saved the output to a file
+    docker export -o C:\test\octopus_container.tar octopus
 
 # Steps to backup Container's filesystem & volumes -- disaster recovery
 * ## Backup Image And Volume
