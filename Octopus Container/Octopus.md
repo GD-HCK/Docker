@@ -6,9 +6,9 @@
 
 # Steps to backup Container's filesystem only -- no volumes
  1. ## Backing up container to Dock Hub
-  1. ### Create Image From Container
-     #### Syntax: docker db_container_name backup_container_name:tag
-     docker commit octopus_db_1 octopus_db:18072021
+     1. ### Create Image From Container
+        #### Syntax: docker db_container_name backup_container_name:tag
+        docker commit octopus_db_1 octopus_db:18072021
 
  2. ### Push Image To Docker Hub. If Using MFA, Create An Access Token At [Docker Security Settings](https://hub.docker.com/settings/security)
     docker login -u username
