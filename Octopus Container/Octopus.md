@@ -1,9 +1,9 @@
 # OctopusContainer
 
 # Initial Setup
- * ### docker run --interactive --detach --name OctopusDeploy --publish 8080:8080 --env ACCEPT_EULA="Y" --env DB_CONNECTION_STRING="..." octopusdeploy/octopusdeploy:2021.1.7508
- * ### amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image
-   docker-compose --project-name Octopus --env-file "Full_Path_To_File\octopus.env" up -d
+  ### -> docker run --interactive --detach --name OctopusDeploy --publish 8080:8080 --env ACCEPT_EULA="Y" --env DB_CONNECTION_STRING="..." octopusdeploy/octopusdeploy:2021.1.7508
+  ### -> amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image
+  docker-compose --project-name Octopus --env-file "Full_Path_To_File\octopus.env" up -d
 
 # If Changing Image Filesystem Content, You Need Only A Backup Of The Container
  * ## Backing up container to Dock Hub
