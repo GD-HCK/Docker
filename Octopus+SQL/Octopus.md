@@ -45,7 +45,8 @@ docker ps # this shows a list of containers and the IDs
 Set-Location -Path Path_to_location
 #### docker export -o zip_file_name.tar Container_Name # export container + volumes
 #### Remember to compress the below files using 7zip, the -o switch saved the output to a file
-docker export -o octopus_container.tar octopus
+docker export -o octopus_container.tar octopus_db_1
+docker export -o octopus_container.tar octopus_octopus-server_1
 
 ## Import Container
 #### docker load -i path_to_file
