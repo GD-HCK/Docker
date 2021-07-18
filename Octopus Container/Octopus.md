@@ -46,23 +46,26 @@
         docker load -i C:\test\octopus_web.tar
 
 # Steps to backup Container's filesystem & volumes -- disaster recovery
-1. ## Backup Container
+### There is no way to backup volumes. However, files such as databases, documents and so on can be backed up externally in a .tar archive.
+1. ## Backup Container volumes files
     1. #### Show a list of containers and the IDs
         docker ps
-    2. #### Export container & volumes to a file
-        #### Syntax: docker export -o path_to_location\zip_file_name.tar Container_Name
-        #### Remember to compress the below files using 7zip, the -o switch saved the output to a file
-        docker export -o C:\test\octopus_db.tar octopus_db_1
-        docker export -o C:\test\octopus_web.tar octopus_octopus-server_1
+    2. #### Export container's data to an archive file
+        #### Syntax: docker run --rm --volumes-from <container_name> -v <Local_Backup_Folder>:<container_mounted_folder> ubuntu bash -c "cd <folder_to_backup> && tar cvf /<container_mounted_folder>/<archive_name>.tar ."
+        #### Remember to compress the files using 7zip
+        docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs.tar ."
 
-2. ## Import Containers (will appear as images)
-    #### Syntax: docker import <path_to_tar_file> <container_name:tag>
-    docker import C:\test\octopus_db.tar gdhck/octopus_db:latest
-    docker import C:\test\octopus_web.tar gdhck/octopus_web:latest
-
-3. ## Restore The Docker Composed Container
-    #### Amend the .env file to include the newly imported containers (will appear as images)
-    docker-compose --project-name Octopus --env-file "Full_Path_To_File\octopus.env" up -d
+2. ## Restore The Docker Composed Container
+    1. #### Create the composed container from scratch
+        docker-compose --project-name Octopus --env-file "Full_Path_To_File\octopus.env" up -d
+    2. #### Overwrite the content of /var/opt/mssql with the one coming from the new volume
+        1. #### Stop the composed container
+        2. #### Import data back in the volumes
+            docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "rm -rf /var/opt/mssql/data/* && cd /var/opt/mssql/data && tar xvf /backup/octopus_dbs.tar ."
+        3. #### Start the composed container
+             1. Start SQL container
+             2. Start WEB container 
+       
 
 # Check Container Resource Utilisation
 docker stats
