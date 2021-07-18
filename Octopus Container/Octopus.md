@@ -103,7 +103,7 @@
              * Start WEB container
 
 # Perform Automated Tasks
-## Checkout the task automation scripts for octopus containers within [Automation](./Automation)
+Checkout the task automation scripts for octopus containers within [Automation](../Automation)
        
 
 # Check Container Resource Utilisation
