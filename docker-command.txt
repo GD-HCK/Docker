@@ -1,0 +1,4 @@
+#docker run --interactive --detach --name OctopusDeploy --publish 8080:8080 --env ACCEPT_EULA="Y" --env DB_CONNECTION_STRING="..." octopusdeploy/octopusdeploy:2021.1.7508
+docker pull octopusdeploy/octopusdeploy:2021.1.7508
+docker pull mcr.microsoft.com/mssql/server:2019-latest
+docker-compose --project-name Octopus --env-file .\octopus.env up -d
