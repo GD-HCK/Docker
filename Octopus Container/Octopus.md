@@ -1,10 +1,14 @@
 # OctopusContainer
 
 # Initial Setup
-  #### -> Amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image as the SQL container's baseline <-
-  #### Syntax: docker-compose --project-name <project_name> --env-file <Full_Path_To_File\env_file_name.env"> up -d
+  #### `Amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image as the SQL container's baseline`
+  #### Create project (composed container)
+  ```powershell
+  # Syntax: 
+  $ docker-compose --project-name <project_name> --env-file <Full_Path_To_File\env_file_name.env> up -d
+  # Example:
   docker-compose --project-name Octopus --env-file .\octopus.env up -d
-
+  ```
 # Steps to backup Container's filesystem only -- no volumes
  1. ## Backing up container to Dock Hub
     1. ### Create Image From Container
