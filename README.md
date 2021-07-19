@@ -17,7 +17,7 @@
     PS> docker run -it --name ubuntu -p 8080:80 ubuntu:latest
     ```
 
-# Initial Setup
+# Docker Topics
 Check each folder's .md file for instructions
 
 1. [Octopus.md](./Octopus%20Container/Octopus.md)
