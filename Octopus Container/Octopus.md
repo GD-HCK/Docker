@@ -84,30 +84,39 @@
 `Volumes as such cannot be backed up. However, their files can be packaged externally in a .tar archive.`
 1. ## Backup DB Container volumes files
     1. #### Show a list of containers and the IDs
-        docker ps
+        ```powershell
+        PS> docker ps
+        ```
     2. #### Export container's data to an archive file
-        #### Syntax: docker run --rm --volumes-from <container_name> -v <Local_Backup_Folder>:<container_mounted_folder> ubuntu bash -c "cd <folder_to_backup> && tar cvf /<container_mounted_folder>/<archive_name>.tar ."
-        #### Remember to compress the files using 7zip
+        ```powershell
+        # Remember to compress the files using 7zip
+        # Syntax:
+        PS> docker run --rm --volumes-from <container_name> -v <Local_Backup_Folder>:<container_mounted_folder> ubuntu bash -c "cd <folder_to_backup> && tar cvf /<container_mounted_folder>/<archive_name>.tar ."
+        # Example:
         docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs.tar ."
-
+        PS> 
+        ```
 2. ## Backup Web Server Container's file system
     1. #### Show a list of containers and the IDs
-        docker ps
+        ```powershell
+        PS> docker ps
+        ```
     2. #### Export container's data to an archive file
-        #### Syntax: docker run --rm --volumes-from <container_name> -v <Local_Backup_Folder>:<container_mounted_folder> ubuntu bash -c "cd <folder_to_backup> && tar cvf /<container_mounted_folder>/<archive_name>.tar ."
-        #### Remember to compress the files using 7zip
-        #### Backup of 
-        1. /repository,
-        docker run --rm --volumes-from octopus_octopus-server_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /repository && tar cvf /backup/repository.tar ."
-        2. /artifacts,
-        docker run --rm --volumes-from octopus_octopus-server_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /artifacts && tar cvf /backup/artifacts.tar ."
-        3. /taskLogs,
-        docker run --rm --volumes-from octopus_octopus-server_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /taskLogs && tar cvf /backup/taskLogs.tar ."
-        4. /cache,
-        docker run --rm --volumes-from octopus_octopus-server_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /cache && tar cvf /backup/cache.tar ."
-        5. /import,
-        docker run --rm --volumes-from octopus_octopus-server_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /import && tar cvf /backup/import.tar ."
-        6. /Octopus: //TODO
+        ```powershell
+        # Remember to compress the files using 7zip
+        # Syntax:
+        PS> docker run --rm --volumes-from <container_name> -v <Local_Backup_Folder>:<container_mounted_folder> ubuntu bash -c "cd <folder_to_backup> && tar cvf /<container_mounted_folder>/<archive_name>.tar ."
+        # Example:
+        # Backup of @(/repository, /artifacts, /taskLogs, /cache, /import, /Octopus)
+        PS> $directories = @(repository,artifacts,taskLogs,cache,import,Octopus)
+        PS> $octopusWebServer = "octopus_octopus-server_1"
+        PS> $backupdirectory = "C:\Docker_Volumes_backups"
+        PS> $mountpoint = $backupdirectory+":/backup"
+        PS> foreach ($directory in $directories){
+                $command = "cd /"+$directory+" && tar cvf /backup/"+$directory+".tar ."
+                docker run --rm --volumes-from $octopusWebServer -v $mountpoint ubuntu bash -c $command
+            }
+        ```
 
 3. ## Restore The Docker Composed Container
     1. #### Create the composed container from scratch
