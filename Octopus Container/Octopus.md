@@ -5,7 +5,7 @@
   #### Create project (composed container)
   ```powershell
   # Syntax: 
-  PS> docker-compose --project-name ${project_name} --env-file ${Full_Path_To_File\env_file_name.env} up -d
+  PS> docker-compose --project-name ${project_name} --env-file ${Path_To_Env_File.env} up -d
   # Example:
   PS> docker-compose --project-name Octopus --env-file .\octopus.env up -d
   ```
@@ -121,7 +121,7 @@
     1. #### Create the composed container from scratch
         ```powershell
         # Syntax: 
-        PS> docker-compose --project-name $project_name --env-file ${Path_To_env_file.env} up -d
+        PS> docker-compose --project-name $project_name --env-file ${Path_To_Env_File.env} up -d
         # Example:
         PS> docker-compose --project-name Octopus --env-file .\octopus.env up -d
         ```
