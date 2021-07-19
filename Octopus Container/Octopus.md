@@ -14,7 +14,7 @@
     1. #### Create Image From Container
         ```powershell
         # Syntax: 
-        PS> docker $db_container_name ${backup_container_name:tag}
+        PS> docker $db_container_name "$backup_container_name:$tag"
         # Example:
         PS> docker commit octopus_db_1 octopus_db:18072021
         ```
@@ -30,7 +30,7 @@
         # List images and IDs:
         PS> docker images
         # Tagging Syntax: 
-        PS> docker tag $image_id ${your_docker_user/image_name:tag}
+        PS> docker tag $image_id "$your_docker_user/$image_name:$tag"
         # Example:
         PS> docker tag 258a147eb1c2 gdhck/octopus_db:18072021
         ```
@@ -38,7 +38,7 @@
     4. #### Push Image To Docker Registry (Or Docker Hub)
         ```powershell
         # Syntax: 
-        PS> docker push ${your_docker_user/image_name:tag}
+        PS> docker push "$your_docker_user/$image_name:$tag"
         # Example:
         PS> docker push gdhck/octopus_db:18072021
         ```
@@ -66,7 +66,7 @@
     2. #### Save Image
     ```powershell
     # Syntax: 
-    PS> docker save -o $zip_file_name.tar ${image_name_or_id:tag}
+    PS> docker save -o $zip_file_name.tar "$image_name_or_id:$tag"
     # Remember to compress the below files using 7zip, the -o switch saved the output to a file
     # Example:
     PS> docker save -o C:\test\octopus_image.tar octopusdeploy/octopusdeploy:latest
