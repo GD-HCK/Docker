@@ -178,4 +178,4 @@
     PS> docker exec -it b4924f4768bd /bin/bash
     ```
 # Perform Automated Tasks
-Checkout the task automation scripts for octopus containers within [Automation](../Automation)
+Check out the task-automation scripts for containers within [Automation](../Automation)
