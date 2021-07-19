@@ -1,5 +1,12 @@
 # Readme
 
+## Keep your docker up-to-date
+```powershell
+# Run the below as administrator in Powershell 5.1 only for windows server
+PS> install-module DockerProvider -Force 
+PS> install-package Docker -ProviderName DockerProvider -Force
+```
+
 ## Docker basic commands
 * #### Detached (Background run):
     ```powershell
