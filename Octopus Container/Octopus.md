@@ -1,7 +1,7 @@
 # OctopusContainer
 
 # Initial Setup
-  #### Amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image as the SQL container's baseline
+  #### -> Amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image as the SQL container's baseline <-
   #### Syntax: docker-compose --project-name <project_name> --env-file <Full_Path_To_File\env_file_name.env"> up -d
   docker-compose --project-name Octopus --env-file .\octopus.env up -d
 
@@ -12,7 +12,7 @@
         docker commit octopus_db_1 octopus_db:18072021
 
     2. ### Push Image To Docker Hub. 
-        #### [If Using MFA, Create An Access Token At [Docker Security Settings](https://hub.docker.com/settings/security)]
+        #### -> If Using MFA, Create An Access Token At [Docker Security Settings](https://hub.docker.com/settings/security) <-
         docker login -u username
 
     3. ### Create Tag For Image
