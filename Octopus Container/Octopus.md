@@ -171,14 +171,7 @@ Checkout the task automation scripts for octopus containers within [Automation](
     PS> docker volume rm $(docker volume ls -f dangling=true -q)
     ```
     #### Example of volumes created by Octopus
-    * d790ca76f11adce6a72523e1e88c62efd6c25d1e602092a8a55d0871c839be03
-    * faf5b8014dc9115828dceffaad77cc5bc8741e10d68da1e6f169a409fbb2f070
-    * octopus_artifacts
-    * octopus_cache
-    * octopus_import
-    * octopus_repository
-    * octopus_sqlvolume
-    * octopus_taskLogs
+    ![octopus_container_volumes](../img/octopus_container_volumes.jpg "Cctopus Container Volumes")
 
 3. #### Start interactive shell with running container (works only with debian/linux/ubuntu based containers)
     #### Syntax: docker exec -it <container_id> /bin/bash
