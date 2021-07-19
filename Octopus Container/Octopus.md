@@ -153,26 +153,23 @@
              * Start SQL container
              * Start WEB container
 
-# Perform Automated Tasks
-Checkout the task automation scripts for octopus containers within [Automation](../Automation)
-
-# Check Container Resource Utilisation
+# Troubloshooting
+1. #### Check Container Resource Utilisation
     ```powershell
     PS> docker stats
     ```
-# Troubloshooting
-1. #### check if there are dangling volumes preventing Octopus from working properly
+2. #### check if there are dangling volumes preventing Octopus from working properly
     ```powershell
     PS> docker volume ls -f dangling=true
     ```
-2. #### delete dangling volumes
+3. #### delete dangling volumes
     ```powershell
     PS> docker volume rm $(docker volume ls -f dangling=true -q)
     ```
     #### Example of volumes created by Octopus
     ![octopus_container_volumes](../img/octopus_container_volumes.jpg "Cctopus Container Volumes")
 
-3. #### Start interactive shell with running container (works only with debian/linux/ubuntu based containers)
+4. #### Start interactive shell with running container (works only with debian/linux/ubuntu based containers)
     #### Syntax: docker exec -it <container_id> /bin/bash
     ```powershell
     # Syntax:
@@ -180,3 +177,5 @@ Checkout the task automation scripts for octopus containers within [Automation](
     # Example:
     PS> docker exec -it b4924f4768bd /bin/bash
     ```
+# Perform Automated Tasks
+Checkout the task automation scripts for octopus containers within [Automation](../Automation)
