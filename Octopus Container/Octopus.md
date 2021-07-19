@@ -158,6 +158,7 @@ Checkout the task automation scripts for octopus containers within [Automation](
 
 # Check Container Resource Utilisation
     ```powershell
+    
     PS> docker stats
     ```
 
