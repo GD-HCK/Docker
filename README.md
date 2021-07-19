@@ -1,11 +1,11 @@
 # Docker
 
 # Docker basic commands
-* #### Syntax - detached (Background run): 
+* #### Detached (Background run):
     ```powershell
+    # Syntax
     $ docker run --detach --name <container_name> --publish 8080:8080 --env <required_environment_variable>  <image_name:tag>
-    ```
-    ```powershell
+    # Example
     $ docker run -d --name ubuntu -p 8080:80 ubuntu:latest
     ``` 
 * #### Syntax - interactive (Foreground run):
