@@ -5,7 +5,7 @@
   #### Create project (composed container)
   ```powershell
   # Syntax: 
-  PS> docker-compose --project-name <project_name> --env-file <Full_Path_To_File\env_file_name.env> up -d
+  PS> docker-compose --project-name ${project_name} --env-file ${Full_Path_To_File\env_file_name.env} up -d
   # Example:
   PS> docker-compose --project-name Octopus --env-file .\octopus.env up -d
   ```
@@ -14,7 +14,7 @@
     1. #### Create Image From Container
         ```powershell
         # Syntax: 
-        PS> docker db_container_name backup_container_name:tag
+        PS> docker $db_container_name ${backup_container_name:tag}
         # Example:
         PS> docker commit octopus_db_1 octopus_db:18072021
         ```
@@ -30,7 +30,7 @@
         # List images and IDs:
         PS> docker images
         # Tagging Syntax: 
-        PS> docker tag iamge_id your_docker_user/image_name:tag
+        PS> docker tag $image_id ${your_docker_user/image_name:tag}
         # Example:
         PS> docker tag 258a147eb1c2 gdhck/octopus_db:18072021
         ```
@@ -38,7 +38,7 @@
     4. #### Push Image To Docker Registry (Or Docker Hub)
         ```powershell
         # Syntax: 
-        PS> docker push your_docker_user/image_name:tag
+        PS> docker push ${your_docker_user/image_name:tag}
         # Example:
         PS> docker push gdhck/octopus_db:18072021
         ```
@@ -47,7 +47,7 @@
         # List images and IDs:
         PS> docker images
         # Remove Image Syntax: 
-        PS> docker rmi image_name_or_id
+        PS> docker rmi $image_name_or_id
         # Example:
         PS> docker rmi 258a147eb1c2
         ```
@@ -66,7 +66,7 @@
     2. #### Save Image
     ```powershell
     # Syntax: 
-    PS> docker save -o <zip_file_name.tar> <image_name_or_id:tag>
+    PS> docker save -o $zip_file_name.tar ${image_name_or_id:tag}
     # Remember to compress the below files using 7zip, the -o switch saved the output to a file
     # Example:
     PS> docker save -o C:\test\octopus_image.tar octopusdeploy/octopusdeploy:latest
@@ -74,7 +74,7 @@
     3. #### Import Image
     ```powershell
     # Syntax: 
-    PS> docker load -i path_to_tar_file
+    PS> docker load -i $path_to_tar_file
     # Example:
     PS> docker load -i C:\test\octopus_db.tar
     PS> docker load -i C:\test\octopus_web.tar
@@ -87,14 +87,13 @@
         ```powershell
         PS> docker ps
         ```
-    2. #### Export container's data to an archive file
+    2. #### Export SQL container's data to an tarball archive file
         ```powershell
         # Remember to compress the files using 7zip
         # Syntax:
-        PS> docker run --rm --volumes-from <container_name> -v <Local_Backup_Folder>:<container_mounted_folder> ubuntu bash -c "cd <folder_to_backup> && tar cvf /<container_mounted_folder>/<archive_name>.tar ."
+        PS> docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "cd $folder_to_backup && tar cvf /$container_mounted_folder/$archive_name.tar ."
         # Example:
-        docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs.tar ."
-        PS> 
+        PS> docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs.tar ."
         ```
 2. ## Backup Web Server Container's file system
     1. #### Show a list of containers and the IDs
@@ -105,7 +104,7 @@
         ```powershell
         # Remember to compress the files using 7zip
         # Syntax:
-        PS> docker run --rm --volumes-from <container_name> -v <Local_Backup_Folder>:<container_mounted_folder> ubuntu bash -c "cd <folder_to_backup> && tar cvf /<container_mounted_folder>/<archive_name>.tar ."
+        PS> docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "cd $folder_to_backup && tar cvf /$container_mounted_folder/$archive_name.tar ."
         # Example:
         # Backup of @(/repository, /artifacts, /taskLogs, /cache, /import, /Octopus)
         PS> $directories = @(repository,artifacts,taskLogs,cache,import,Octopus)
@@ -120,44 +119,57 @@
 
 3. ## Restore The Docker Composed Container
     1. #### Create the composed container from scratch
-        docker-compose --project-name Octopus --env-file "Full_Path_To_File\octopus.env" up -d
-    2. #### Overwrite the content of /var/opt/mssql with the one coming from the new volume
+        ```powershell
+        # Syntax: 
+        PS> docker-compose --project-name $project_name --env-file ${Path_To_env_file.env} up -d
+        # Example:
+        PS> docker-compose --project-name Octopus --env-file .\octopus.env up -d
+        ```
+    2. #### Overwrite the content of /var/opt/mssql with the one coming from the archive
         1. #### Stop the composed container
         2. #### Import database data back in the volumes
-           #### Syntax: docker run --rm --volumes-from <container_name> -v <Local_Backup_Folder>:<container_mounted_folder> ubuntu bash -c "rm -rf /<folder_to_clear>/* && cd <folder_to_clear> && tar xvf /<container_mounted_folder>/<archive_name>.tar ."
-            docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "rm -rf /var/opt/mssql/data/* && cd /var/opt/mssql/data && tar xvf /backup/octopus_dbs.tar ."
+            ```powershell
+            # Syntax: 
+            PS> docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "rm -rf /$folder_to_clear/* && cd $folder_to_clear && tar xvf /$container_mounted_folder/$archive_name.tar ."
+            # Example:
+            PS> docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "rm -rf /var/opt/mssql/data/* && cd /var/opt/mssql/data && tar xvf /backup/octopus_dbs.tar ."
+            ```
         3. #### Import web file system's data back in the volumes
-            #### Syntax: docker run --rm --volumes-from <container_name> -v <Local_Backup_Folder>:<container_mounted_folder> ubuntu bash -c "rm -rf /<folder_to_clear>/* && cd <folder_to_clear> && tar xvf /<container_mounted_folder>/<archive_name>.tar ."
-            #### Remember to compress the files using 7zip
-            #### Backup of 
-            1. /repository,
-            docker run --rm --volumes-from octopus_octopus-server_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "rm -rf /repository/* && cd /repository && tar xvf /backup/repository.tar ."
-            2. /artifacts,
-            docker run --rm --volumes-from octopus_octopus-server_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "rm -rf /artifacts/* && cd /artifacts && tar xvf /backup/artifacts.tar ."
-            3. /taskLogs,
-            docker run --rm --volumes-from octopus_octopus-server_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "rm -rf /taskLogs/* && cd /taskLogs && tar xvf /backup/taskLogs.tar ."
-            4. /cache,
-            docker run --rm --volumes-from octopus_octopus-server_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "rm -rf /cache/* && cd /cache && tar xvf /backup/cache.tar ."
-            5. /import,
-            docker run --rm --volumes-from octopus_octopus-server_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "rm -rf /import/* && cd /import && tar xvf /backup/import.tar ."
-            6. /Octopus: //TODO
-
+            ```powershell
+            # Syntax: 
+            PS> docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "rm -rf /$folder_to_clear/* && cd $folder_to_clear && tar xvf /$container_mounted_folder/$archive_name.tar ."
+            # Example:
+            # Restore of @(/repository, /artifacts, /taskLogs, /cache, /import, /Octopus)
+            PS> $directories = @(repository,artifacts,taskLogs,cache,import,Octopus)
+            PS> $octopusWebServer = "octopus_octopus-server_1"
+            PS> $backupdirectory = "C:\Docker_Volumes_backups"
+            PS> $mountpoint = $backupdirectory+":/backup"
+            PS> foreach ($directory in $directories){
+                    $command = "rm -rf /"+$directory+"/* && cd /"+$directory+" && tar xvf /backup/"+$directory+".tar ."
+                    docker run --rm --volumes-from $octopusWebServer -v $mountpoint ubuntu bash -c $command
+                }
+            ```
         3. #### Start the composed container
              * Start SQL container
              * Start WEB container
 
 # Perform Automated Tasks
 Checkout the task automation scripts for octopus containers within [Automation](../Automation)
-       
 
 # Check Container Resource Utilisation
-docker stats
+    ```powershell
+    PS> docker stats
+    ```
 
 # Troubloshooting
-1. #### check if there are existing images volumes preventing octopus to work properly
-    docker volume ls -f dangling=true # List dangling volumes
+1. #### check if there are dangling volumes preventing Octopus from working properly
+    ```powershell
+    PS> docker volume ls -f dangling=true
+    ```
 2. #### delete dangling volumes
-    docker volume rm $(docker volume ls -f dangling=true -q)
+    ```powershell
+    PS> docker volume rm $(docker volume ls -f dangling=true -q)
+    ```
     #### Example of volumes created by Octopus
     * d790ca76f11adce6a72523e1e88c62efd6c25d1e602092a8a55d0871c839be03
     * faf5b8014dc9115828dceffaad77cc5bc8741e10d68da1e6f169a409fbb2f070
@@ -170,4 +182,9 @@ docker stats
 
 3. #### Start interactive shell with running container (works only with debian/linux/ubuntu based containers)
     #### Syntax: docker exec -it <container_id> /bin/bash
-    docker exec -it b4924f4768bd /bin/bash
+    ```powershell
+    # Syntax:
+    PS> docker exec -it $container_id /bin/bash
+    # Example:
+    PS> docker exec -it b4924f4768bd /bin/bash
+    ```
