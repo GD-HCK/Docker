@@ -5,69 +5,80 @@
   #### Create project (composed container)
   ```powershell
   # Syntax: 
-  $ docker-compose --project-name <project_name> --env-file <Full_Path_To_File\env_file_name.env> up -d
+  PS> docker-compose --project-name <project_name> --env-file <Full_Path_To_File\env_file_name.env> up -d
   # Example:
-  $ docker-compose --project-name Octopus --env-file .\octopus.env up -d
+  PS> docker-compose --project-name Octopus --env-file .\octopus.env up -d
   ```
 # Steps to backup Container's filesystem only -- no volumes' content
  1. ## Backing up container to Docker Hub
     1. ### Create Image From Container
         ```powershell
         # Syntax: 
-        $ docker db_container_name backup_container_name:tag
+        PS> docker db_container_name backup_container_name:tag
         # Example:
-        $ docker commit octopus_db_1 octopus_db:18072021
+        PS> docker commit octopus_db_1 octopus_db:18072021
         ```
 
     2. ### Push Image To Docker Hub. 
-        #### `If Using MFA, Create An Access Token At [Docker Security Settings](https://hub.docker.com/settings/security)`
+        `If Using MFA, Create An Access Token At [Docker Security Settings](https://hub.docker.com/settings/security)`
         ```powershell
-        $ docker login -u username
+        PS> docker login -u username
         ```
 
     3. ### Create Tag For Image
         ```powershell
         # List images and IDs:
-        $ docker images
+        PS> docker images
         # Tagging Syntax: 
-        $ docker tag iamge_id your_docker_user/image_name:tag
+        PS> docker tag iamge_id your_docker_user/image_name:tag
         # Example:
-        $ docker tag 258a147eb1c2 gdhck/octopus_db:18072021
+        PS> docker tag 258a147eb1c2 gdhck/octopus_db:18072021
         ```
 
     4. ### Push Image To Docker Registry (Or Docker Hub)
         ```powershell
         # Syntax: 
-        $ docker push your_docker_user/image_name:tag
+        PS> docker push your_docker_user/image_name:tag
         # Example:
-        $ docker push gdhck/octopus_db:18072021
+        PS> docker push gdhck/octopus_db:18072021
         ```
     5. ### Remove Obsolete Images (i.e. backup just created)
         ```powershell
         # List images and IDs:
-        $ docker images
+        PS> docker images
         # Remove Image Syntax: 
-        $ docker rmi image_name_or_id
+        PS> docker rmi image_name_or_id
         # Example:
-        $ docker rmi 258a147eb1c2
+        PS> docker rmi 258a147eb1c2
         ```
     6. ### Image Restore
-        #### `Amend the .env file to use the octopus_db image just pushed (i.e. SQL_IMAGE=gdhck/octopusserver:latest) and then run`
+        `Amend the .env file to use the octopus_db image just pushed (i.e. SQL_IMAGE = gdhck/octopusserver:latest) and then run`
         ```powershell
         # Create docker compose:
         PS> docker-compose --project-name Octopus --env-file .\octopus.env up -d
         ```
 2. ## Backing up image to File
-    1.  #### Show a list of images and the IDs
-        docker images
-    2.  #### Save Image
-        #### Syntax: docker save -o <zip_file_name.tar> <image_name_or_id:tag>
-        #### Remember to compress the below files using 7zip, the -o switch saved the output to a file
-        docker save -o C:\test\octopus_image.tar octopusdeploy/octopusdeploy:latest
-    3.  #### Import Image
-        #### Syntax: docker load -i path_to_tar_file
-        docker load -i C:\test\octopus_db.tar
-        docker load -i C:\test\octopus_web.tar
+    1. ##### List Images
+    ```powershell
+    # Show a list of images and the IDs
+    PS> docker images
+    ```
+    2. ##### Save Image
+    ```powershell
+    # Syntax: 
+    PS> docker save -o <zip_file_name.tar> <image_name_or_id:tag>
+    # Remember to compress the below files using 7zip, the -o switch saved the output to a file
+    # Example:
+    PS> docker save -o C:\test\octopus_image.tar octopusdeploy/octopusdeploy:latest
+    ```
+    3. ##### Import Image
+    ```powershell
+    # Syntax: 
+    PS> docker load -i path_to_tar_file
+    # Example:
+    PS> docker load -i C:\test\octopus_db.tar
+    PS> docker load -i C:\test\octopus_web.tar
+    ```
 
 # Steps to backup Container's filesystem & volumes -- disaster recovery
 ### There is no way to backup volumes. However, files such as databases, documents and so on can be backed up externally in a .tar archive.
