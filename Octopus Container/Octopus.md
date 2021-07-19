@@ -72,7 +72,7 @@
     PS> docker save -o C:\test\octopus_image.tar octopusdeploy/octopusdeploy:latest
     ```
     3. ##### Import Image
-    ```javascript
+    ```bash
     # Syntax: 
     PS> docker load -i path_to_tar_file
     # Example:
