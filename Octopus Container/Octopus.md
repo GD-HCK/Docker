@@ -7,39 +7,56 @@
   # Syntax: 
   $ docker-compose --project-name <project_name> --env-file <Full_Path_To_File\env_file_name.env> up -d
   # Example:
-  docker-compose --project-name Octopus --env-file .\octopus.env up -d
+  $ docker-compose --project-name Octopus --env-file .\octopus.env up -d
   ```
-# Steps to backup Container's filesystem only -- no volumes
- 1. ## Backing up container to Dock Hub
+# Steps to backup Container's filesystem only -- no volumes' content
+ 1. ## Backing up container to Docker Hub
     1. ### Create Image From Container
-        #### Syntax: docker db_container_name backup_container_name:tag
-        docker commit octopus_db_1 octopus_db:18072021
+        ```powershell
+        # Syntax: 
+        $ docker db_container_name backup_container_name:tag
+        # Example:
+        $ docker commit octopus_db_1 octopus_db:18072021
+        ```
 
     2. ### Push Image To Docker Hub. 
-        #### -> If Using MFA, Create An Access Token At [Docker Security Settings](https://hub.docker.com/settings/security) <-
-        docker login -u username
+        #### `If Using MFA, Create An Access Token At [Docker Security Settings](https://hub.docker.com/settings/security)`
+        ```powershell
+        $ docker login -u username
+        ```
 
     3. ### Create Tag For Image
-        1. #### List images and IDs
-            docker images
-        2. #### Syntax: docker tag iamge_id your_docker_user/image_name:tag
-            docker tag 258a147eb1c2 gdhck/octopus_db:18072021
+        ```powershell
+        # List images and IDs:
+        $ docker images
+        # Tagging Syntax: 
+        $ docker tag iamge_id your_docker_user/image_name:tag
+        # Example:
+        $ docker tag 258a147eb1c2 gdhck/octopus_db:18072021
+        ```
 
     4. ### Push Image To Docker Registry (Or Docker Hub)
-        #### Syntax: docker push your_docker_user/image_name:tag
-        docker push gdhck/octopus_db:18072021
-
+        ```powershell
+        # Syntax: 
+        $ docker push your_docker_user/image_name:tag
+        # Example:
+        $ docker push gdhck/octopus_db:18072021
+        ```
     5. ### Remove Obsolete Images (i.e. backup just created)
-        1.  #### Show a list of images and the IDs
-            docker images
-        2.  #### Remove images
-            #### Syntax: docker rmi image_name_or_id
-            docker rmi 258a147eb1c2
-
+        ```powershell
+        # List images and IDs:
+        $ docker images
+        # Remove Image Syntax: 
+        $ docker rmi image_name_or_id
+        # Example:
+        $ docker rmi 258a147eb1c2
+        ```
     6. ### Image Restore
-        #### Amend the .env file to use the octopus_db image just pushed (i.e. SQL_IMAGE=gdhck/octopusserver:latest) and then run
-        docker-compose --project-name Octopus --env-file .\octopus.env up -d
-
+        #### `Amend the .env file to use the octopus_db image just pushed (i.e. SQL_IMAGE=gdhck/octopusserver:latest) and then run`
+        ```powershell
+        # Create docker compose:
+        PS> docker-compose --project-name Octopus --env-file .\octopus.env up -d
+        ```
 2. ## Backing up image to File
     1.  #### Show a list of images and the IDs
         docker images
