@@ -158,10 +158,8 @@ Checkout the task automation scripts for octopus containers within [Automation](
 
 # Check Container Resource Utilisation
     ```powershell
-    
     PS> docker stats
     ```
-
 # Troubloshooting
 1. #### check if there are dangling volumes preventing Octopus from working properly
     ```powershell
