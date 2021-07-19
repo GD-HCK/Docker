@@ -58,12 +58,12 @@
         PS> docker-compose --project-name Octopus --env-file .\octopus.env up -d
         ```
 2. ## Backing up image to File
-    1. ##### List Images
+    1. #### List Images
     ```powershell
     # Show a list of images and the IDs
     PS> docker images
     ```
-    2. ##### Save Image
+    2. #### Save Image
     ```powershell
     # Syntax: 
     PS> docker save -o <zip_file_name.tar> <image_name_or_id:tag>
@@ -71,8 +71,8 @@
     # Example:
     PS> docker save -o C:\test\octopus_image.tar octopusdeploy/octopusdeploy:latest
     ```
-    3. ##### Import Image
-    ```bash
+    3. #### Import Image
+    ```powershell
     # Syntax: 
     PS> docker load -i path_to_tar_file
     # Example:
