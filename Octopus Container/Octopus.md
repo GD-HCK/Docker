@@ -80,8 +80,8 @@
     PS> docker load -i C:\test\octopus_web.tar
     ```
 
-# Steps to backup Container's filesystem & volumes -- disaster recovery
-##### `There is no way to backup volumes. However, files such as databases, documents and so on can be backed up externally in a .tar archive.`
+# Steps to backup Container's filesystem & volumes' content -- disaster recovery
+`Volumes as such cannot be backed up. However, their files can be packaged externally in a .tar archive.`
 1. ## Backup DB Container volumes files
     1. #### Show a list of containers and the IDs
         docker ps
