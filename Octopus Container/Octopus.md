@@ -1,7 +1,7 @@
 # OctopusContainer
 
 # Initial Setup
-  #### Amend the .env file to use the `mcr.microsoft.com/mssql/server:2019-latest` image as the SQL container's baseline
+  Amend the .env file to use the `mcr.microsoft.com/mssql/server:2019-latest` image as the SQL container's baseline
   #### Create project (composed container)
   ```powershell
   # Syntax: 
