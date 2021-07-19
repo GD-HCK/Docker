@@ -1,6 +1,6 @@
 # Readme
 
-# Docker basic commands
+## Docker basic commands
 * #### Detached (Background run):
     ```powershell
     # Syntax:
@@ -17,7 +17,7 @@
     PS> docker run -it --name ubuntu -p 8080:80 ubuntu:latest
     ```
 
-# Docker Topics
+## Docker Topics
 `Check each folder's .md file for instructions`
 
 1. [Octopus.md](./Octopus%20Container/Octopus.md)
