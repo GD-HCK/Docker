@@ -1,5 +1,5 @@
 # Initial Setup - Docker-Compose
-  Amend the [octopus.env file](./octopus.env) to use the `mcr.microsoft.com/mssql/server:2019-latest` image as the SQL container's baseline
+  Amend the [octopus.env](./octopus.env) file to use the `mcr.microsoft.com/mssql/server:2019-latest` image as the SQL container's baseline
   #### Create project (composed container)
   ```powershell
   # Syntax: 
@@ -50,7 +50,7 @@
         PS> docker rmi 258a147eb1c2
         ```
     6. #### Image Restore
-        Amend the [octopus.env file](./octopus.env) to use the octopus_db image just pushed (i.e. `SQL_IMAGE = gdhck/octopusserver:latest`) and then run
+        Amend the [octopus.env](./octopus.env) file to use the octopus_db image just pushed (i.e. `SQL_IMAGE = gdhck/octopusserver:latest`) and then run
         ```powershell
         # Create docker compose:
         PS> docker-compose --project-name Octopus --env-file .\octopus.env up -d
