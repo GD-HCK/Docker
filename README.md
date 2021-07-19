@@ -18,7 +18,7 @@
     ```
 
 # Docker Topics
-Check each folder's .md file for instructions
+`Check each folder's .md file for instructions`
 
 1. [Octopus.md](./Octopus%20Container/Octopus.md)
 2. [Automation.md](./Automation/Automation.md)
