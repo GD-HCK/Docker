@@ -1,8 +1,9 @@
 # OctopusContainer
 
 # Initial Setup
-  #### Amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image
-  -> docker-compose --project-name Octopus --env-file "Full_Path_To_File\octopus.env" up -d
+  #### Amend the .env file to use the mcr.microsoft.com/mssql/server:2019-latest image as the SQL container's baseline
+  #### Syntax: docker-compose --project-name <project_name> --env-file <Full_Path_To_File\env_file_name.env"> up -d
+  docker-compose --project-name Octopus --env-file .\octopus.env up -d
 
 # Steps to backup Container's filesystem only -- no volumes
  1. ## Backing up container to Dock Hub
@@ -10,13 +11,15 @@
         #### Syntax: docker db_container_name backup_container_name:tag
         docker commit octopus_db_1 octopus_db:18072021
 
-    2. ### Push Image To Docker Hub. If Using MFA, Create An Access Token At [Docker Security Settings](https://hub.docker.com/settings/security)
+    2. ### Push Image To Docker Hub. 
+        #### [If Using MFA, Create An Access Token At [Docker Security Settings](https://hub.docker.com/settings/security)]
         docker login -u username
 
     3. ### Create Tag For Image
-        #### Syntax: docker tag iamge_id your_docker_user/image_name:tag
-        docker images # this shows a list of images and the IDs
-        docker tag 258a147eb1c2 gdhck/octopus_db:18072021
+        1. #### List images and IDs
+            docker images
+        2. #### Syntax: docker tag iamge_id your_docker_user/image_name:tag
+            docker tag 258a147eb1c2 gdhck/octopus_db:18072021
 
     4. ### Push Image To Docker Registry (Or Docker Hub)
         #### Syntax: docker push your_docker_user/image_name:tag
