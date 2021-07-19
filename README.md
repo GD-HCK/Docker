@@ -2,7 +2,9 @@
 
 # Docker basic commands
 * #### Syntax - detached (Background run): 
+    ```powershell
     $ docker run --detach --name <container_name> --publish 8080:8080 --env <required_environment_variable>  <image_name:tag>
+    ```
     ```powershell
     $ docker run -d --name ubuntu -p 8080:80 ubuntu:latest
     ``` 
@@ -12,7 +14,7 @@
     ```
     -> Use ctrl+P+Q to exit the foreground console and leave the container running in the background <-
     ```powershell
-    $ docker run -it --name ubuntu -p 8080:80 ubuntu:latest
+    docker run -it --name ubuntu -p 8080:80 ubuntu:latest
     ```
 
 # Initial Setup
