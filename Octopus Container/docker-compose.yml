@@ -39,10 +39,12 @@ services:
       - taskLogs:/taskLogs
       - cache:/cache
       - import:/import
+      - octopus:/Octopus
 volumes:
   repository:
   artifacts:
   taskLogs:
   cache:
   import:
+  octopus:
   sqlvolume:

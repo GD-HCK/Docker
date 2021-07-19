@@ -19,7 +19,7 @@ $dateTime = Get-Date -Format "dd-MM-yyyy_hh-mm-ss"
 
 $backupfolderlocation = Test-Path -Path $backupfolder
 
-if(!$backupfolderlocation){
+if (!$backupfolderlocation) {
     New-Item -Path $backupfolder -ItemType Directory
 }
 
@@ -34,22 +34,19 @@ Start-Sleep 10
 
 Write-Host ""
 Write-Host "Backing up database files" -ForegroundColor Yellow
-$mountpoint = $backupfolder+":/backup"
-$command = "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs_"+$dateTime+".tar ."
+$mountpoint = $backupfolder + ":/backup"
+$command = "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs_" + $dateTime + ".tar ."
 docker run --rm --volumes-from $OctopusDBContainerName -v $mountpoint ubuntu bash -c $command
 
 Write-Host ""
 Write-Host "Backing up web filesystem files" -ForegroundColor Yellow
-$command = "cd /repository && tar cvf /backup/repository_"+$dateTime+".tar ."
-docker run --rm --volumes-from $OctopusWEBContainerName -v $mountpoint ubuntu bash -c $command
-$command = "cd /artifacts && tar cvf /backup/artifacts_"+$dateTime+".tar ."
-docker run --rm --volumes-from $OctopusWEBContainerName -v $mountpoint ubuntu bash -c $command
-$command = "cd /taskLogs && tar cvf /backup/taskLogs_"+$dateTime+".tar ."
-docker run --rm --volumes-from $OctopusWEBContainerName -v $mountpoint ubuntu bash -c $command
-$command = "cd /cache && tar cvf /backup/cache_"+$dateTime+".tar ."
-docker run --rm --volumes-from $OctopusWEBContainerName -v $mountpoint ubuntu bash -c $command
-$command = "cd /import && tar cvf /backup/import_"+$dateTime+".tar ."
-docker run --rm --volumes-from $OctopusWEBContainerName -v $mountpoint ubuntu bash -c $command
+$directories = @("repository", "artifacts", "taskLogs", "cache", "import", "Octopus")
+$backupdirectory = "C:\Docker_Volumes_backups"
+$mountpoint = $backupdirectory + ":/backup"
+foreach ($directory in $directories){
+    $command = "cd /"+$directory+" && tar cvf /backup/"+$directory+"_"+ $dateTime + ".tar ."
+    docker run --rm --volumes-from $octopusWebServer -v $mountpoint ubuntu bash -c $command
+}
 
 Write-Host ""
 Write-Host "Backup completed." -ForegroundColor Green
@@ -57,7 +54,7 @@ Write-Host "Backup completed." -ForegroundColor Green
 Write-Host ""
 Write-Host "Starting DB Container" -ForegroundColor Yellow
 docker container start $OctopusDBContainerName
-Write-Host "Waiting for DB containers to start"
+Write-Host "Waiting for DB containers to start" -ForegroundColor Yellow
 Start-Sleep 15
 Write-Host ""
 Write-Host "Starting Web Container" -ForegroundColor Yellow
