@@ -5,6 +5,7 @@ services:
     environment:
       SA_PASSWORD: ${SA_PASSWORD}
       ACCEPT_EULA: ${ACCEPT_EULA}
+      MSSQL_MEMORY_LIMIT_MB: 2048
     ports:
       - 1401:1433
     healthcheck:
