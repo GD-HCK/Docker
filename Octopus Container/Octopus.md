@@ -107,7 +107,7 @@
         PS> docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "cd $folder_to_backup && tar cvf /$container_mounted_folder/$archive_name.tar ."
         # Example:
         # Backup of @(/repository, /artifacts, /taskLogs, /cache, /import, /Octopus)
-        PS> $directories = @(repository,artifacts,taskLogs,cache,import,Octopus)
+        PS> $directories = @("repository","artifacts","taskLogs","cache","import","Octopus")
         PS> $octopusWebServer = "octopus_octopus-server_1"
         PS> $backupdirectory = "C:\Docker_Volumes_backups"
         PS> $mountpoint = $backupdirectory+":/backup"
@@ -140,7 +140,7 @@
             PS> docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "rm -rf /$folder_to_clear/* && cd $folder_to_clear && tar xvf /$container_mounted_folder/$archive_name.tar ."
             # Example:
             # Restore of @(/repository, /artifacts, /taskLogs, /cache, /import, /Octopus)
-            PS> $directories = @(repository,artifacts,taskLogs,cache,import,Octopus)
+            PS> $directories = @("repository","artifacts","taskLogs","cache","import","Octopus")
             PS> $octopusWebServer = "octopus_octopus-server_1"
             PS> $backupdirectory = "C:\Docker_Volumes_backups"
             PS> $mountpoint = $backupdirectory+":/backup"
