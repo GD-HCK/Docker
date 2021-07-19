@@ -11,7 +11,7 @@
   ```
 # Steps to backup Container's filesystem only -- no volumes' content
  1. ## Backing up container to Docker Hub
-    1. ### Create Image From Container
+    1. #### Create Image From Container
         ```powershell
         # Syntax: 
         PS> docker db_container_name backup_container_name:tag
@@ -19,13 +19,13 @@
         PS> docker commit octopus_db_1 octopus_db:18072021
         ```
 
-    2. ### Push Image To Docker Hub. 
+    2. #### Push Image To Docker Hub. 
         `If Using MFA, Create An Access Token At [Docker Security Settings](https://hub.docker.com/settings/security)`
         ```powershell
         PS> docker login -u username
         ```
 
-    3. ### Create Tag For Image
+    3. #### Create Tag For Image
         ```powershell
         # List images and IDs:
         PS> docker images
@@ -35,14 +35,14 @@
         PS> docker tag 258a147eb1c2 gdhck/octopus_db:18072021
         ```
 
-    4. ### Push Image To Docker Registry (Or Docker Hub)
+    4. #### Push Image To Docker Registry (Or Docker Hub)
         ```powershell
         # Syntax: 
         PS> docker push your_docker_user/image_name:tag
         # Example:
         PS> docker push gdhck/octopus_db:18072021
         ```
-    5. ### Remove Obsolete Images (i.e. backup just created)
+    5. #### Remove Obsolete Images (i.e. backup just created)
         ```powershell
         # List images and IDs:
         PS> docker images
@@ -51,7 +51,7 @@
         # Example:
         PS> docker rmi 258a147eb1c2
         ```
-    6. ### Image Restore
+    6. #### Image Restore
         `Amend the .env file to use the octopus_db image just pushed (i.e. SQL_IMAGE = gdhck/octopusserver:latest) and then run`
         ```powershell
         # Create docker compose:
@@ -81,7 +81,7 @@
     ```
 
 # Steps to backup Container's filesystem & volumes -- disaster recovery
-### There is no way to backup volumes. However, files such as databases, documents and so on can be backed up externally in a .tar archive.
+#### `There is no way to backup volumes. However, files such as databases, documents and so on can be backed up externally in a .tar archive.`
 1. ## Backup DB Container volumes files
     1. #### Show a list of containers and the IDs
         docker ps
