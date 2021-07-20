@@ -1,11 +1,18 @@
 # Readme
 
+## Getting Started on Windows
+
+
 ## Keep your docker up-to-date
-```powershell
-# Run the below as administrator in Powershell 5.1 only for windows server
-PS> install-module DockerProvider -Force 
-PS> install-package Docker -ProviderName DockerProvider -Force
-```
+* `Windows 10`
+    Install docker via [Docker Hub](https://hub.docker.com/editions/community/docker-ce-desktop-windows/ "Docker Hub")
+* `Windows Server`
+    ```powershell
+    # Run the below as administrator in Powershell 5.1 only for windows server
+    PS> install-module DockerProvider -Force 
+    PS> install-package Docker -ProviderName DockerProvider -Force
+    ```
+
 
 ## Docker basic commands
 * #### Start container in Detached mode (Background run):
