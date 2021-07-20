@@ -8,20 +8,24 @@ PS> install-package Docker -ProviderName DockerProvider -Force
 ```
 
 ## Docker basic commands
-* #### Detached (Background run):
+* #### Start container in Detached mode (Background run):
     ```powershell
     # Syntax:
     PS> docker run --detach --name <container_name> --publish 8080:8080 --env <required_environment_variable>  <image_name:tag>
     # Example:
     PS> docker run -d --name ubuntu -p 8080:80 ubuntu:latest
     ``` 
-* #### Interactive (Foreground run):
+* #### Start container in Interactive mode (Foreground run):
     ```powershell
     # Syntax:
     PS> docker run --interactive --name <container_name> --publish 8080:8080 --env <required_environment_variable>  <image_name:tag>
     # Use Ctrl+P+Q to exit the foreground console and leave the container running in the background
     # Example:
     PS> docker run -it --name ubuntu -p 8080:80 ubuntu:latest
+    ```
+* #### Remove all stopped containers and associated unused volumes
+    ```powershell
+    PS> docker ps --filter "status=exited" -q | %{docker container rm -v $_}
     ```
 
 ## Docker Topics
