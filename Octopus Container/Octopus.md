@@ -7,9 +7,12 @@
   * `ADMIN_EMAIL`
   * `MASTER_KEY`
   * `ADMIN_API_KEY` (there is a known issue related to this which you can check [here](https://github.com/OctopusDeploy/Issues/issues/6629))
-  
-  To speed up the process you can use the [`password generator`](../Automation/OctopusEnvVariablesGen.ps1). 
+
+  To speed up the process you can use the [`password generator`](../Automation/OctopusEnvVariablesGen.ps1).
   You can run the script on your local machine
+
+  ![password_gen_gif](../res/gif/PasswordGen.gif "Password Generator")
+
   #### Create project (composed container)
   ```powershell
   # Syntax: 
@@ -175,7 +178,7 @@
     PS> docker volume rm $(docker volume ls -f dangling=true -q)
     ```
     #### Example of volumes created by Octopus
-    ![octopus_container_volumes](../img/octopus_container_volumes.jpg "Cctopus Container Volumes")
+    ![octopus_container_volumes](../res/img/octopus_container_volumes.jpg "Octopus Container Volumes")
 
 4. #### Start interactive shell with running container (works only with debian/linux/ubuntu based containers)
     #### Syntax: docker exec -it <container_id> /bin/bash
