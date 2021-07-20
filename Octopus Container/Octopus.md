@@ -92,7 +92,7 @@
     ```
 
 # Backup Volume's files -- Disaster Recovery
-Volumes as such cannot be backed up. However, their files can be packaged externally in a **.tar archive.**`
+Volumes as such cannot be backed up. However, their files can be packaged externally in a **.tar** archive.
 1. ## Backup DB Container volumes files
     1. #### Show a list of containers and the IDs
         ```powershell
