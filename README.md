@@ -5,6 +5,7 @@
 
 ## Keep your docker up-to-date
 * `Windows 10`
+
     Install docker via [Docker Hub](https://hub.docker.com/editions/community/docker-ce-desktop-windows/ "Docker Hub")
 * `Windows Server`
     ```powershell
