@@ -1,5 +1,13 @@
 # Initial Setup - Docker-Compose
-  Amend the [octopus.env](./octopus.env) file to use the `mcr.microsoft.com/mssql/server:2019-latest` image as the SQL container's baseline
+  Amend the [octopus.env](./octopus.env) file to use the below required variables:
+  * `SA_PASSWORD` 
+  * `SQL_IMAGE` = `mcr.microsoft.com/mssql/server:2019-latest` - recommended
+  * `ADMIN_USERNAME`
+  * `ADMIN_PASSWORD`
+  * `ADMIN_EMAIL`
+  * `MASTER_KEY`
+  * `ADMIN_API_KEY` (there is a known issue related to this which you can check [here](https://github.com/OctopusDeploy/Issues/issues/6629))
+  To speed up the process you can use the [`password generator`](../Automation/OctopusEnvVariablesGen.ps1). You can run the script on your local machine
   #### Create project (composed container)
   ```powershell
   # Syntax: 
