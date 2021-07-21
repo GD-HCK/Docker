@@ -39,6 +39,7 @@
 ## Docker Topics
 `Check each folder's .md file for instructions`
 
-1. [Octopus.md](./Octopus%20Container/Octopus.md)
-2. [Automation.md](./Automation/Automation.md)
-3. [Compose.md](./Compose/Compose.md) [In Progress]
+1. [Automation](./Automation/README.md)
+1. [Compose](./Compose/README.md) [In Progress]
+1. [Octopus Container](./Octopus%20Container%20Automation/README.md)
+1. [Wordpress Container](./Wordpress%20Container%20Automation/README.md)
