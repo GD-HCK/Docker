@@ -8,10 +8,10 @@
   * `MASTER_KEY`
   * `ADMIN_API_KEY` (there is a known issue related to this which you can check [here](https://github.com/OctopusDeploy/Issues/issues/6629))
 
-  To speed up the process you can use the [`password generator`](../Automation/OctopusEnvVariablesGen.ps1).
+  To speed up the process you can use the [`password generator`](../Automation/PasswordGen.ps1).
   You can run the script on your local machine
 
-  ![password_gen_gif](../res/gif/PasswordGen.gif "Password Generator")
+  ![password_gen_gif](../res/gif/OctopusPasswordGen.gif "Password Generator")
 
   #### Create project (composed container)
   ```powershell
