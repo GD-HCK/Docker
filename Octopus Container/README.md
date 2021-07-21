@@ -107,6 +107,7 @@ Volumes as such cannot be backed up. However, their files can be packaged extern
         PS> docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs.tar ."
         ```
 2. ## Backup Web Server Container's file system
+    You can automate the below tasks by running the Powershell script [OctopusBackup.ps1](../Automation/Octopus%20Container%20Automation/OctopusBackup.ps1 "OctopusBackup.ps1") locally on the Docker server.
     1. #### Show a list of containers and the IDs
         ```powershell
         PS> docker ps
@@ -129,6 +130,7 @@ Volumes as such cannot be backed up. However, their files can be packaged extern
         ```
 
 3. ## Restore The Docker Composed Container
+    You can automate the below tasks by running the Powershell script [OctopusRestore.ps1](../Automation/Octopus%20Container%20Automation/OctopusRestore.ps1 "OctopusRestore.ps1") locally on the Docker server.
     1. #### Create the composed container from scratch
         ```powershell
         # Syntax: 
