@@ -10,8 +10,8 @@
 * `Windows Server`
     ```powershell
     # Run the below as administrator in Powershell 5.1 only for windows server
-    PS> install-module DockerProvider -Force 
-    PS> install-package Docker -ProviderName DockerProvider -Force
+    install-module DockerProvider -Force 
+    install-package Docker -ProviderName DockerProvider -Force
     ```
 
 
@@ -19,21 +19,21 @@
 * #### Start container in Detached mode (Background run):
     ```powershell
     # Syntax:
-    PS> docker run --detach --name <container_name> --publish 8080:8080 --env <required_environment_variable>  <image_name:tag>
+    docker run --detach --name <container_name> --publish 8080:8080 --env <required_environment_variable>  <image_name:tag>
     # Example:
-    PS> docker run -d --name ubuntu -p 8080:80 ubuntu:latest
+    docker run -d --name ubuntu -p 8080:80 ubuntu:latest
     ``` 
 * #### Start container in Interactive mode (Foreground run):
     ```powershell
     # Syntax:
-    PS> docker run --interactive --name <container_name> --publish 8080:8080 --env <required_environment_variable>  <image_name:tag>
+    docker run --interactive --name <container_name> --publish 8080:8080 --env <required_environment_variable>  <image_name:tag>
     # Use Ctrl+P+Q to exit the foreground console and leave the container running in the background
     # Example:
-    PS> docker run -it --name ubuntu -p 8080:80 ubuntu:latest
+    docker run -it --name ubuntu -p 8080:80 ubuntu:latest
     ```
 * #### Remove all stopped containers and associated unused volumes
     ```powershell
-    PS> docker ps --filter "status=exited" -q | %{docker container rm -v $_} && docker volume rm $(docker volume ls -f dangling=true -q)
+    docker ps --filter "status=exited" -q | %{docker container rm -v $_} && docker volume rm $(docker volume ls -f dangling=true -q)
     ```
 
 ## Docker Topics

@@ -36,18 +36,18 @@ Write-Host "Containers stopped" -ForegroundColor Green
 Start-Sleep 10
 
 Write-Host ""
-Write-Host "Backing up database files" -ForegroundColor Yellow
+Write-Host "Backing up database files" -ForegroundColor Cyan
 $mountpoint = "$bkpfolder`:/backup"
 $command = "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs_" + $dateTime + ".tar ."
-docker run --rm --volumes-from $OctopusDBContainerName -v $mountpoint ubuntu bash -c $command
+docker run --rm --volumes-from $OctopusDBContainerName -v $mountpoint ubuntu bash -c $command | Out-Null
 
 Write-Host ""
-Write-Host "Backing up web filesystem files" -ForegroundColor Yellow
+Write-Host "Backing up web filesystem files" -ForegroundColor Cyan
 $directories = @("repository", "artifacts", "taskLogs", "cache", "import", "Octopus")
 foreach ($directory in $directories){
     $command = "cd /"+$directory+" && tar cvf /backup/"+$directory+"_"+ $dateTime + ".tar ."
-    docker run --rm --volumes-from $OctopusWEBContainerName -v $mountpoint ubuntu bash -c $command
-}
+    docker run --rm --volumes-from $OctopusWEBContainerName -v $mountpoint ubuntu bash -c $command | Out-Null
+} 
 
 Write-Host ""
 Write-Host "Backup completed." -ForegroundColor Green

@@ -14,7 +14,7 @@ services:
     volumes:
       - web:/var/www/html
     networks: 
-        - wordpress-vnet
+        - wp-vnet
   sql:
     image: ${MYSQL_IMAGE}
     restart: always
@@ -28,10 +28,10 @@ services:
     volumes:
       - sql:/var/lib/mysql
     networks: 
-        wordpress-vnet:
+        wp-vnet:
 
 volumes:
   web:
   sql:
 networks: 
-    wordpress-vnet:
+  wp-vnet:
