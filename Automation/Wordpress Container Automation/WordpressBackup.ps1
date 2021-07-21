@@ -3,7 +3,7 @@ param (
     [Parameter(Mandatory = $true)]
     [string]
     [ValidateNotNullOrEmpty()]
-    $backupfolder,
+    $RootBackupLocation,
 
     [Parameter(Mandatory = $true)]
     [string]
@@ -17,11 +17,14 @@ param (
 )
 $dateTime = Get-Date -Format "dd-MM-yyyy_hh-mm-ss"
 
-$backupfolderlocation = Test-Path -Path $backupfolder
+$testLocation = Test-Path -Path $RootBackupLocation
 
-if (!$backupfolderlocation) {
-    New-Item -Path $backupfolder -ItemType Directory
+if (!$testLocation) {
+    New-Item -Path $RootBackupLocation -ItemType Directory
 }
+
+$location = New-Item -Path "$RootBackupLocation\wordpress_Backups_$dateTime" -ItemType Directory
+$bkpfolder = Get-Item -Path $location
 
 # Stop containers
 Write-Host "Stopping containers" -ForegroundColor Yellow
@@ -34,15 +37,14 @@ Start-Sleep 10
 
 Write-Host ""
 Write-Host "Backing up database files" -ForegroundColor Yellow
-$mountpoint = $backupfolder + ":/backup"
+$mountpoint = "$bkpfolder`:/backup"
 $command = "cd /var/lib/mysql && tar cvf /backup/wordpress_dbs_" + $dateTime + ".tar ."
 docker run --rm --volumes-from $WordpressDBContainerName -v $mountpoint ubuntu bash -c $command
 
 Write-Host ""
 Write-Host "Backing up web filesystem files" -ForegroundColor Yellow
-$mountpoint = $backupfolder + ":/backup"
 $command = "cd /var/www/html && tar cvf /backup/wordpress_web_"+ $dateTime + ".tar ."
-docker run --rm --volumes-from $WordpressWebServer -v $mountpoint ubuntu bash -c $command
+docker run --rm --volumes-from $WordpressWEBContainerName -v $mountpoint ubuntu bash -c $command
 
 Write-Host ""
 Write-Host "Backup completed." -ForegroundColor Green

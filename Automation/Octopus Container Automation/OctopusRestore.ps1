@@ -19,8 +19,7 @@ param (
 function removeBackups {
     $removeBackupFiles = Read-Host -Prompt "Do you want to remove the backup files? yes/no"
     if($removeBackupFiles -ieq "yes" -or $removeBackupFiles -ieq "y"){
-        $items = Get-ChildItem -Path $backupfolder
-        $items | Remove-Item
+        Remove-Item -Path $backupfolder -Recurse
         Write-Host "Backups removed successfully" -ForegroundColor Green
     }elseif($removeBackupFiles -ine "no" -or $removeBackupFiles -ine "n" -or $null -ne $removeBackupFiles){
         Write-Warning "Invalid input. Answer either yes or no (y and n are also allowed)"
