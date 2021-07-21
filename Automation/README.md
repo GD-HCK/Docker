@@ -13,3 +13,21 @@
 ```powershell
 docker exec -it b4924f4768bd /bin/bash
 ```
+```bash
+docker exec -it b4924f4768bd /bin/bash
+```
+```javascript
+docker exec -it b4924f4768bd /bin/bash
+```
+```python
+docker exec -it b4924f4768bd /bin/bash
+```
+```c#
+docker exec -it b4924f4768bd /bin/bash
+```
+```java
+docker exec -it b4924f4768bd /bin/bash
+```
+```kotlin
+docker exec -it b4924f4768bd /bin/bash
+```
