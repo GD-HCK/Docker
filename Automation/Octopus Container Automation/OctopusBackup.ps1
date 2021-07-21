@@ -8,7 +8,7 @@ param (
     [Parameter(Mandatory = $true)]
     [string]
     [ValidateNotNullOrEmpty()]
-    $OctopusDBContainerName,
+    $OctopusSQLContainerName,
 
     [Parameter(Mandatory = $true)]
     [string]
@@ -23,13 +23,13 @@ if (!$testLocation) {
     New-Item -Path $RootBackupLocation -ItemType Directory
 }
 
-$location = New-Item -Path "$RootBackupLocation\wordpress_Backups_$dateTime" -ItemType Directory
+$location = New-Item -Path "$RootBackupLocation\octopus_Backups_$dateTime" -ItemType Directory
 $bkpfolder = Get-Item -Path $location
 
 # Stop containers
 Write-Host "Stopping containers" -ForegroundColor Yellow
 
-docker container stop $OctopusDBContainerName
+docker container stop $OctopusSQLContainerName
 docker container stop $OctopusWEBContainerName
 
 Write-Host "Containers stopped" -ForegroundColor Green
@@ -39,7 +39,7 @@ Write-Host ""
 Write-Host "Backing up database files" -ForegroundColor Cyan
 $mountpoint = "$bkpfolder`:/backup"
 $command = "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs_" + $dateTime + ".tar ."
-docker run --rm --volumes-from $OctopusDBContainerName -v $mountpoint ubuntu bash -c $command | Out-Null
+docker run --rm --volumes-from $OctopusSQLContainerName -v $mountpoint ubuntu bash -c $command | Out-Null
 
 Write-Host ""
 Write-Host "Backing up web filesystem files" -ForegroundColor Cyan
@@ -54,7 +54,7 @@ Write-Host "Backup completed." -ForegroundColor Green
 
 Write-Host ""
 Write-Host "Starting DB Container" -ForegroundColor Yellow
-docker container start $OctopusDBContainerName
+docker container start $OctopusSQLContainerName
 Write-Host "Waiting for DB containers to start" -ForegroundColor Yellow
 Start-Sleep 15
 Write-Host ""

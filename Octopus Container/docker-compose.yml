@@ -1,6 +1,6 @@
 version: '3'
 services:
-   db:
+   sql:
     image: ${SQL_IMAGE}
     environment:
       SA_PASSWORD: ${SA_PASSWORD}
@@ -14,7 +14,7 @@ services:
       retries: 10
     volumes:
       - sqlvolume:/var/opt/mssql
-   octopus-server:
+   web:
     image: octopusdeploy/octopusdeploy:${OCTOPUS_SERVER_TAG}
     privileged: ${PRIVILEGED}
     user: ${USER}
@@ -30,10 +30,10 @@ services:
       ADMIN_API_KEY: ${ADMIN_API_KEY}
       DISABLE_DIND: ${DISABLE_DIND}
     ports:
-      - 8080:8080
+      - 8001:8080
       - 11111:10943
     depends_on:
-      - db
+      - sql
     volumes:
       - repository:/repository
       - artifacts:/artifacts

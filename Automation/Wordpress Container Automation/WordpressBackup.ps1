@@ -38,7 +38,7 @@ Start-Sleep 10
 Write-Host ""
 Write-Host "Backing up database files" -ForegroundColor Cyan
 $mountpoint = "$bkpfolder`:/backup"
-$command = "cd /var/lib/mysql && tar cvf /backup/wordpress_dbs_" + $dateTime + ".tar ."
+$command = "cd /var/lib/mysql && tar cvf /backup/wordpress_db_" + $dateTime + ".tar ."
 docker run --rm --volumes-from $WordpressDBContainerName -v $mountpoint ubuntu bash -c $command  | Out-Null
 
 Write-Host ""
