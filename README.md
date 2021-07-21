@@ -19,14 +19,16 @@
 * #### Start container in Detached mode (Background run):
     ```powershell
     # Syntax:
-    docker run --detach --name <container_name> --publish 8080:8080 --env <required_environment_variable>  <image_name:tag>
+    docker run --detach --name $container_name --publish 8080:8080 --env $required_environment_variable  "$image_name:$tag"
+    ```
+    ```powershell
     # Example:
     docker run -d --name ubuntu -p 8080:80 ubuntu:latest
     ``` 
 * #### Start container in Interactive mode (Foreground run):
-    ```
+    ```powershell
     # Syntax:
-    docker run --interactive --name <container_name> --publish 8080:8080 --env <required_environment_variable>  <image_name:tag>
+    docker run --interactive --name $container_name --publish 8080:8080 --env $required_environment_variable  "$image_name:$tag"
     # Use Ctrl+P+Q to exit the foreground console and leave the container running in the background
     ```
     ```powershell
