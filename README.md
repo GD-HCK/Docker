@@ -35,7 +35,8 @@
     ```
 * #### Remove all stopped containers and associated unused volumes
     ```powershell
-    docker ps --filter "status=exited" -q | %{docker container rm -v $_} && docker volume rm $(docker volume ls -f dangling=true -q)
+    docker ps --filter "status=exited" -q | %{docker container rm -v $_} `
+    && docker volume rm $(docker volume ls -f dangling=true -q)
     ```
 
 ## Docker Topics
