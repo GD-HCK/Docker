@@ -25,7 +25,7 @@
     1. #### Create Image From Container
         ```powershell
         # Syntax: 
-        docker $container_name "$backup_container_name:$tag"
+        docker $container_name "$backup_container_name`:$tag"
         # Example:
         docker commit octopus_db_1 octopus_db:18072021
         ```
@@ -41,7 +41,7 @@
         # List images and IDs:
         docker images
         # Tagging Syntax: 
-        docker tag $image_id "$your_docker_user/$image_name:$tag"
+        docker tag $image_id "$your_docker_user`/$image_name`:$tag"
         # Example:
         docker tag 258a147eb1c2 gdhck/octopus_db:18072021
         ```
@@ -49,7 +49,7 @@
     4. #### Push Image To Docker Registry (Or Docker Hub)
         ```powershell
         # Syntax: 
-        docker push "$your_docker_user/$image_name:$tag"
+        docker push "$your_docker_user`/$image_name`:$tag"
         # Example:
         docker push gdhck/octopus_db:18072021
         ```
@@ -77,19 +77,19 @@
     2. #### Save Image
     ```powershell
     # Syntax: 
-    docker save -o $zip_file_name.tar "$image_name_or_id:$tag"
+    docker save -o $zip_file_name.tar "$image_name_or_id`:$tag"
     # Remember to compress the below files using 7zip, the -o switch saved the output to a file
     # Example:
-    docker save -o C:\test\octopus_db.tar octopusdeploy/octopus_db:latest
-    docker save -o C:\test\octopus_web.tar octopusdeploy/octopus_web:latest
+    docker save -o octopus_db.tar octopusdeploy/octopus_db:latest
+    docker save -o octopus_web.tar octopusdeploy/octopus_web:latest
     ```
     3. #### Import Image
     ```powershell
     # Syntax: 
     docker load -i $path_to_tar_file
     # Example:
-    docker load -i C:\test\octopus_db.tar
-    docker load -i C:\test\octopus_web.tar
+    docker load -i octopus_db.tar
+    docker load -i octopus_web.tar
     ```
 
 # Backup Volume's files -- Disaster Recovery
@@ -105,9 +105,11 @@ You can automate the below tasks by running the Powershell script [OctopusBackup
         ```powershell
         # Remember to compress the files using 7zip
         # Syntax:
-        docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "cd $folder_to_backup && tar cvf /$container_mounted_folder/$archive_name.tar ."
+        docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder`:$container_mounted_folder" ubuntu bash `
+                    -c "cd $folder_to_backup && tar cvf `/$container_mounted_folder`/$archive_name.tar ."
         # Example:
-        docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs.tar ."
+        docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash `
+                    -c "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs.tar ."
         ```
 2. ## Backup Web Server Container's file system
     1. #### Show a list of containers and the IDs
@@ -118,7 +120,8 @@ You can automate the below tasks by running the Powershell script [OctopusBackup
         ```powershell
         # Remember to compress the files using 7zip
         # Syntax:
-        docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "cd $folder_to_backup && tar cvf /$container_mounted_folder/$archive_name.tar ."
+        docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder`:$container_mounted_folder" ubuntu bash `
+                    -c "cd $folder_to_backup && tar cvf `/$container_mounted_folder`/$archive_name.tar ."
         # Example:
         # Backup of @(/repository, /artifacts, /taskLogs, /cache, /import, /Octopus)
         $directories = @("repository","artifacts","taskLogs","cache","import","Octopus")
@@ -145,14 +148,17 @@ You can automate the below tasks by running the Powershell script [OctopusBackup
         2. #### Import database data back in the volumes
             ```powershell
             # Syntax: 
-            docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "rm -rf /$folder_to_clear/* && cd $folder_to_clear && tar xvf /$container_mounted_folder/$archive_name.tar ."
+            docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder`:$container_mounted_folder" ubuntu bash `
+                        -c "rm -rf `/$folder_to_clear/* && cd $folder_to_clear && tar xvf `/$container_mounted_folder`/$archive_name.tar ."
             # Example:
-            docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "rm -rf /var/opt/mssql/data/* && cd /var/opt/mssql/data && tar xvf /backup/octopus_dbs.tar ."
+            docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash `
+                        -c "rm -rf /var/opt/mssql/data/* && cd /var/opt/mssql/data && tar xvf /backup/octopus_dbs.tar ."
             ```
         3. #### Import web file system's data back in the volumes
             ```powershell
             # Syntax: 
-            docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "rm -rf /$folder_to_clear/* && cd $folder_to_clear && tar xvf /$container_mounted_folder/$archive_name.tar ."
+            docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder`:$container_mounted_folder" ubuntu bash `
+                        -c "rm -rf `/$folder_to_clear/* && cd $folder_to_clear && tar xvf `/$container_mounted_folder`/$archive_name.tar ."
             # Example:
             # Restore of @(/repository, /artifacts, /taskLogs, /cache, /import, /Octopus)
             $directories = @("repository","artifacts","taskLogs","cache","import","Octopus")
