@@ -36,15 +36,15 @@ Write-Host "Containers stopped" -ForegroundColor Green
 Start-Sleep 10
 
 Write-Host ""
-Write-Host "Backing up database files" -ForegroundColor Yellow
+Write-Host "Backing up database files" -ForegroundColor Cyan
 $mountpoint = "$bkpfolder`:/backup"
 $command = "cd /var/lib/mysql && tar cvf /backup/wordpress_dbs_" + $dateTime + ".tar ."
-docker run --rm --volumes-from $WordpressDBContainerName -v $mountpoint ubuntu bash -c $command
+docker run --rm --volumes-from $WordpressDBContainerName -v $mountpoint ubuntu bash -c $command  | Out-Null
 
 Write-Host ""
-Write-Host "Backing up web filesystem files" -ForegroundColor Yellow
+Write-Host "Backing up web filesystem files" -ForegroundColor Cyan
 $command = "cd /var/www/html && tar cvf /backup/wordpress_web_"+ $dateTime + ".tar ."
-docker run --rm --volumes-from $WordpressWEBContainerName -v $mountpoint ubuntu bash -c $command
+docker run --rm --volumes-from $WordpressWEBContainerName -v $mountpoint ubuntu bash -c $command  | Out-Null
 
 Write-Host ""
 Write-Host "Backup completed." -ForegroundColor Green
