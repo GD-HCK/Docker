@@ -11,22 +11,22 @@
 
 
 ```powershell
-docker exec -it b4924f4768bd /bin/bash
+Get-Item exec -it b4924f4768bd /bin/bash
 ```
 ```bash
-docker exec -it b4924f4768bd /bin/bash
+sudo docker exec -it b4924f4768bd /bin/bash
 ```
 ```javascript
-docker exec -it b4924f4768bd /bin/bash
+var = docker exec -it b4924f4768bd /bin/bash
 ```
 ```python
-docker exec -it b4924f4768bd /bin/bash
+def function: docker exec -it b4924f4768bd /bin/bash
 ```
 ```c#
-docker exec -it b4924f4768bd /bin/bash
+List<String> docker = new List<String>(docker exec -it b4924f4768bd /bin/bash)
 ```
 ```java
-docker exec -it b4924f4768bd /bin/bash
+string text = "docker exec -it b4924f4768bd /bin/bash"
 ```
 ```kotlin
 docker exec -it b4924f4768bd /bin/bash
