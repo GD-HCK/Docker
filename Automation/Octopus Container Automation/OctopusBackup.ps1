@@ -15,7 +15,7 @@ param (
     [ValidateNotNullOrEmpty()]
     $OctopusWEBContainerName
 )
-$dateTime = Get-Date -Format "dd-MM-yyyy_hh-mm-ss"
+$dateTime = Get-Date -Format "dd-MM-yyyy_hh-MM-ss"
 
 $testLocation = Test-Path -Path $RootBackupLocation
 
@@ -24,6 +24,8 @@ if (!$testLocation) {
 }
 
 $location = New-Item -Path "$RootBackupLocation\octopus_Backups_$dateTime" -ItemType Directory
+Write-Host "Saving Backups in $location" -ForegroundColor Cyan
+Write-Host ""
 $bkpfolder = Get-Item -Path $location
 
 # Stop containers
@@ -40,14 +42,17 @@ Write-Host "Backing up database files" -ForegroundColor Cyan
 $mountpoint = "$bkpfolder`:/backup"
 $command = "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs_" + $dateTime + ".tar ."
 docker run --rm --volumes-from $OctopusSQLContainerName -v $mountpoint ubuntu bash -c $command | Out-Null
+Write-Host "octopus_dbs_$dateTime`.tar file created" -ForegroundColor Magenta
 
 Write-Host ""
 Write-Host "Backing up web filesystem files" -ForegroundColor Cyan
 $directories = @("repository", "artifacts", "taskLogs", "cache", "import", "Octopus")
 foreach ($directory in $directories){
+    Write-Host ""
     Write-Host "I am working on volume: /$directory" -ForegroundColor Cyan
     $command = "cd /"+$directory+" && tar cvf /backup/"+$directory+"_"+ $dateTime + ".tar ."
     docker run --rm --volumes-from $OctopusWEBContainerName -v $mountpoint ubuntu bash -c $command | Out-Null
+    Write-Host "$directory`_$dateTime`.tar file created" -ForegroundColor Magenta
 } 
 
 Write-Host ""
