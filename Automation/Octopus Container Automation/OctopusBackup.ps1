@@ -45,6 +45,7 @@ Write-Host ""
 Write-Host "Backing up web filesystem files" -ForegroundColor Cyan
 $directories = @("repository", "artifacts", "taskLogs", "cache", "import", "Octopus")
 foreach ($directory in $directories){
+    Write-Host "I am working on volume: /$directory" -ForegroundColor Cyan
     $command = "cd /"+$directory+" && tar cvf /backup/"+$directory+"_"+ $dateTime + ".tar ."
     docker run --rm --volumes-from $OctopusWEBContainerName -v $mountpoint ubuntu bash -c $command | Out-Null
 } 
