@@ -1,24 +1,22 @@
 # Initial Setup - Docker-Compose
-  Amend the [octopus.env](./octopus.env) file to use the below required variables:
-  * `SA_PASSWORD` 
-  * `SQL_IMAGE` = `mcr.microsoft.com/mssql/server:2019-latest` - recommended
-  * `ADMIN_USERNAME`
-  * `ADMIN_PASSWORD`
-  * `ADMIN_EMAIL`
-  * `MASTER_KEY`
-  * `ADMIN_API_KEY` (there is a known issue related to this which you can check [here](https://github.com/OctopusDeploy/Issues/issues/6629))
+  Amend the [wordpress.env](./wordpress.env) file to use the below required variables:
+  * `WORDPRESS_IMAGE_VERSION` 
+  * `WORDPRESS_DB_USER`
+  * `WORDPRESS_DB_PASSWORD`
+  * `WORDPRESS_DB_NAME`
+  * `MYSQL_IMAGE_VERSION` = `5.7` - reccomended
 
   To speed up the process you can use the [`password generator`](../Automation/PasswordGen.ps1).
   You can run the script on your local machine
 
-  ![password_gen_gif](../res/gif/OctopusPasswordGen.gif "Password Generator")
+  ![password_gen_gif](../res/gif/WordPressPasswordGen.gif "Password Generator")
 
   #### Create project (composed container)
   ```powershell
   # Syntax: 
   PS> docker-compose --project-name ${project_name} --env-file ${Path_To_Env_File.env} up -d
   # Example:
-  PS> docker-compose --project-name Octopus --env-file .\octopus.env up -d
+  PS> docker-compose --project-name Wordpress --env-file .\wordpress.env up -d
   ```
 # Steps to Commit and Save a Container to Image
  1. ## Backing up container to Docker Hub
@@ -27,7 +25,7 @@
         # Syntax: 
         PS> docker $container_name "$backup_container_name:$tag"
         # Example:
-        PS> docker commit octopus_db_1 octopus_db:18072021
+        PS> docker commit wordpress_sql_1 wordpress_db:18072021
         ```
 
     2. #### Push Image To Docker Hub. 
@@ -43,7 +41,7 @@
         # Tagging Syntax: 
         PS> docker tag $image_id "$your_docker_user/$image_name:$tag"
         # Example:
-        PS> docker tag 258a147eb1c2 gdhck/octopus_db:18072021
+        PS> docker tag 258a147eb1c2 gdhck/wordpress_db:18072021
         ```
 
     4. #### Push Image To Docker Registry (Or Docker Hub)
@@ -51,7 +49,7 @@
         # Syntax: 
         PS> docker push "$your_docker_user/$image_name:$tag"
         # Example:
-        PS> docker push gdhck/octopus_db:18072021
+        PS> docker push gdhck/wordpress_db:18072021
         ```
     5. #### Remove Obsolete Images (i.e. backup just created)
         ```powershell
@@ -63,10 +61,10 @@
         PS> docker rmi 258a147eb1c2
         ```
     6. #### Image Restore
-        Amend the [octopus.env](./octopus.env) file to use the octopus_db image just pushed (i.e. `SQL_IMAGE = gdhck/octopusserver:latest`) and then run
+        Amend the [wordpress.env](./wordpress.env) file to use the wordpress_db image just pushed (i.e. `MYSQL_IMAGE = gdhck/wordpress_db:18072021`) and then run
         ```powershell
         # Create docker compose:
-        PS> docker-compose --project-name Octopus --env-file .\octopus.env up -d
+        PS> docker-compose --project-name Wordpress --env-file .\wordpress.env up -d
         ```
 2. ## Backing up image to File
     1. #### List Images
@@ -80,22 +78,22 @@
     PS> docker save -o $zip_file_name.tar "$image_name_or_id:$tag"
     # Remember to compress the below files using 7zip, the -o switch saved the output to a file
     # Example:
-    PS> docker save -o C:\test\octopus_db.tar octopusdeploy/octopus_db:latest
-    PS> docker save -o C:\test\octopus_web.tar octopusdeploy/octopus_web:latest
+    PS> docker save -o C:\test\wordpress_web.tar wordpress/wordpress_web:latest
+    PS> docker save -o C:\test\wordpress_db.tar wordpress/wordpress_db:latest
     ```
     3. #### Import Image
     ```powershell
     # Syntax: 
     PS> docker load -i $path_to_tar_file
     # Example:
-    PS> docker load -i C:\test\octopus_db.tar
-    PS> docker load -i C:\test\octopus_web.tar
+    PS> docker load -i C:\test\wordpress_db.tar
+    PS> docker load -i C:\test\wordpress_web.tar
     ```
 
 # Backup Volume's files -- Disaster Recovery
 Volumes as such cannot be backed up. However, their files can be packaged externally in a **.tar** archive.
 
-You can automate the below tasks by running the Powershell script [OctopusBackup.ps1](../Automation/Octopus%20Container%20Automation/OctopusBackup.ps1 "OctopusBackup.ps1") locally on the Docker server.
+You can automate the below tasks by running the Powershell script [WordpressBackup.ps1](../Automation/Wordpress%20Container%20Automation/WordpressBackup.ps1 "WordpressBackup.ps1") locally on the Docker server.
 1. ## Backup DB Container volumes files
     1. #### Show a list of containers and the IDs
         ```powershell
@@ -107,7 +105,7 @@ You can automate the below tasks by running the Powershell script [OctopusBackup
         # Syntax:
         PS> docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "cd $folder_to_backup && tar cvf /$container_mounted_folder/$archive_name.tar ."
         # Example:
-        PS> docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /var/opt/mssql/data && tar cvf /backup/octopus_dbs.tar ."
+        PS> docker run --rm --volumes-from wordpress_sql_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /var/lib/mysql && tar cvf /backup/wordpress_dbs.tar ."
         ```
 2. ## Backup Web Server Container's file system
     1. #### Show a list of containers and the IDs
@@ -120,25 +118,18 @@ You can automate the below tasks by running the Powershell script [OctopusBackup
         # Syntax:
         PS> docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "cd $folder_to_backup && tar cvf /$container_mounted_folder/$archive_name.tar ."
         # Example:
-        # Backup of @(/repository, /artifacts, /taskLogs, /cache, /import, /Octopus)
-        PS> $directories = @("repository","artifacts","taskLogs","cache","import","Octopus")
-        PS> $octopusWebServer = "octopus_octopus-server_1"
-        PS> $backupdirectory = "C:\Docker_Volumes_backups"
-        PS> $mountpoint = $backupdirectory+":/backup"
-        PS> foreach ($directory in $directories){
-                $command = "cd /"+$directory+" && tar cvf /backup/"+$directory+".tar ."
-                docker run --rm --volumes-from $octopusWebServer -v $mountpoint ubuntu bash -c $command
-            }
+        # Backup of @(/var/www/html)
+        PS> docker run --rm --volumes-from wordpress_web_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "cd /var/www/html && tar cvf /backup/wordpress_web.tar ."
         ```
 
 3. ## Restore The Docker Composed Container
-    You can automate the below tasks by running the Powershell script [OctopusRestore.ps1](../Automation/Octopus%20Container%20Automation/OctopusRestore.ps1 "OctopusRestore.ps1") locally on the Docker server.
+    You can automate the below tasks by running the Powershell script [WordpressRestore.ps1](../Automation/Wordpress%20Container%20Automation/WordpressRestore.ps1 "WordpressRestore.ps1") locally on the Docker server.
     1. #### Create the composed container from scratch
         ```powershell
         # Syntax: 
         PS> docker-compose --project-name $project_name --env-file ${Path_To_Env_File.env} up -d
         # Example:
-        PS> docker-compose --project-name Octopus --env-file .\octopus.env up -d
+        PS> docker-compose --project-name Wordpress --env-file .\wordpress.env up -d
         ```
     2. #### Overwrite the content of /var/opt/mssql with the one coming from the archive
         1. #### Stop the composed container
@@ -147,7 +138,7 @@ You can automate the below tasks by running the Powershell script [OctopusBackup
             # Syntax: 
             PS> docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "rm -rf /$folder_to_clear/* && cd $folder_to_clear && tar xvf /$container_mounted_folder/$archive_name.tar ."
             # Example:
-            PS> docker run --rm --volumes-from octopus_db_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "rm -rf /var/opt/mssql/data/* && cd /var/opt/mssql/data && tar xvf /backup/octopus_dbs.tar ."
+            PS> docker run --rm --volumes-from wordpress_sql_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "rm -rf /var/lib/mysql* && cd /var/lib/mysql && tar xvf /backup/wordpress_dbs.tar ."
             ```
         3. #### Import web file system's data back in the volumes
             ```powershell
@@ -155,14 +146,7 @@ You can automate the below tasks by running the Powershell script [OctopusBackup
             PS> docker run --rm --volumes-from $container_name -v "$Local_Backup_Folder:$container_mounted_folder" ubuntu bash -c "rm -rf /$folder_to_clear/* && cd $folder_to_clear && tar xvf /$container_mounted_folder/$archive_name.tar ."
             # Example:
             # Restore of @(/repository, /artifacts, /taskLogs, /cache, /import, /Octopus)
-            PS> $directories = @("repository","artifacts","taskLogs","cache","import","Octopus")
-            PS> $octopusWebServer = "octopus_octopus-server_1"
-            PS> $backupdirectory = "C:\Docker_Volumes_backups"
-            PS> $mountpoint = $backupdirectory+":/backup"
-            PS> foreach ($directory in $directories){
-                    $command = "rm -rf /"+$directory+"/* && cd /"+$directory+" && tar xvf /backup/"+$directory+".tar ."
-                    docker run --rm --volumes-from $octopusWebServer -v $mountpoint ubuntu bash -c $command
-                }
+            PS> docker run --rm --volumes-from wordpress_web_1 -v C:\Docker_Volumes_backups:/backup ubuntu bash -c "rm -rf /var/www/html* && cd /var/www/html && tar xvf /backup/wordpress_web.tar ."
             ```
         3. #### Start the composed container
              * Start SQL container
@@ -182,7 +166,7 @@ You can automate the below tasks by running the Powershell script [OctopusBackup
     PS> docker volume rm $(docker volume ls -f dangling=true -q)
     ```
     #### Example of volumes created by Octopus
-    ![octopus_container_volumes](../res/img/octopus_container_volumes.jpg "Octopus Container Volumes")
+    ![wordpress_container_volumes](../res/img/wordpress_container_volumes.jpg "Wordpress Container Volumes")
 
 4. #### Start interactive shell with running container (works only with debian/linux/ubuntu based containers)
     #### Syntax: docker exec -it <container_id> /bin/bash
