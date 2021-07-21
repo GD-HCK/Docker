@@ -10,6 +10,6 @@
     - [WordpressRestore.ps1](./Wordpress%20Container%20Automation/WordpressRestore.ps1)
 
 
-```bash
+```powershell
 docker exec -it b4924f4768bd /bin/bash
 ```
