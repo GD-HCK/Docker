@@ -41,5 +41,5 @@
 
 1. [Automation](./Automation/README.md)
 1. [Compose](./Compose/README.md) [In Progress]
-1. [Octopus Container](./Octopus%20Container%20Automation/README.md)
-1. [Wordpress Container](./Wordpress%20Container%20Automation/README.md)
+1. [Octopus Container](./Octopus%20Container/README.md)
+1. [Wordpress Container](./Wordpress%20Container/README.md)
