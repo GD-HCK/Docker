@@ -9,7 +9,7 @@
   To speed up the process you can use the [`password generator`](../Automation/PasswordGen.ps1).
   You can run the script on your local machine
 
-  ![password_gen_gif](../res/gif/WordPressPasswordGen.gif "Password Generator")
+  ![password_gen_gif](../res/gif/WordpressPasswordGen.gif "Password Generator")
 
   #### Create project (composed container)
   ```powershell
