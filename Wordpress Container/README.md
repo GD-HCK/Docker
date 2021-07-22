@@ -174,7 +174,7 @@ You can automate the below tasks by running the Powershell script [WordpressBack
     docker volume rm $(docker volume ls -f dangling=true -q)
     ```
     #### Example of volumes created by Octopus
-    ![wordpress_container_volumes](../res/img/wordpress_container_volumes.jpg "Wordpress Container Volumes")
+    ![wordpress_container_volumes](../.res/img/wordpress_container_volumes.jpg "Wordpress Container Volumes")
 
 4. #### Start interactive shell with running container (works only with debian/linux/ubuntu based containers)
     #### Syntax: docker exec -it <container_id> /bin/bash
