@@ -36,6 +36,6 @@ begin {
     }
 }
 process {
-    & '..\Automation\Octopus Container Automation\OctopusBackup.ps1' -RootBackupLocation "$DockerRootDir\Octopus\Backups" -OctopusSQLContainerName octopus_sql_1 -OctopusWEBContainerName octopus_web_1
-    & '..\Automation\Wordpress Container Automation\WordpressBackup.ps1' -RootBackupLocation "$DockerRootDir\Wordpress\Backups" -WordpressDBContainerName wp_sql_1 -WordpressWEBContainerName wp_web_1
+    & "$PSScriptRoot`\Octopus Container Automation\OctopusBackup.ps1" -RootBackupLocation "$DockerRootDir\Octopus\Backups" -OctopusSQLContainerName octopus_sql_1 -OctopusWEBContainerName octopus_web_1
+    & "$PSScriptRoot`\Wordpress Container Automation\WordpressBackup.ps1" -RootBackupLocation "$DockerRootDir\Wordpress\Backups" -WordpressDBContainerName wp_sql_1 -WordpressWEBContainerName wp_web_1
 }

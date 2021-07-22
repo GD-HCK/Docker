@@ -13,7 +13,11 @@ param (
     [Parameter(Mandatory = $true)]
     [string]
     [ValidateNotNullOrEmpty()]
-    $OctopusWEBContainerName
+    $OctopusWEBContainerName,
+
+    [Parameter()]
+    [switch]
+    $DeleteBackups
 )
 $dateTime = Get-Date -Format "dd-MM-yyyy_hh-MM-ss"
 
