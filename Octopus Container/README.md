@@ -188,7 +188,7 @@ You can automate the below tasks by running the Powershell script [OctopusBackup
     docker volume rm $(docker volume ls -f dangling=true -q)
     ```
     #### Example of volumes created by Octopus
-    ![octopus_container_volumes](../.res/img/octopus_container_volumes.jpg "Octopus Container Volumes")
+    ![octopus_container_volumes](../res/img/octopus_container_volumes.jpg "Octopus Container Volumes")
 
 4. #### Start interactive shell with running container (works only with debian/linux/ubuntu based containers)
     #### Syntax: docker exec -it <container_id> /bin/bash
