@@ -19,12 +19,13 @@ param (
     [switch]
     $DeleteBackups
 )
+# Create Backup Location if not exist
 $dateTime = Get-Date -Format "dd-MM-yyyy_hh-MM-ss"
 
 $testLocation = Test-Path -Path $RootBackupLocation
 
 if (!$testLocation) {
-    New-Item -Path $RootBackupLocation -ItemType Directory
+    New-Item -Path $RootBackupLocation -ItemType Directory | Out-Null
 }
 
 $location = New-Item -Path "$RootBackupLocation\octopus_Backups_$dateTime" -ItemType Directory
@@ -41,6 +42,7 @@ docker container stop $OctopusWEBContainerName
 Write-Host "Containers stopped" -ForegroundColor Green
 Start-Sleep 10
 
+# Backup Files
 Write-Host ""
 Write-Host "Backing up database files" -ForegroundColor Cyan
 $mountpoint = "$bkpfolder`:/backup"
@@ -62,6 +64,7 @@ foreach ($directory in $directories){
 Write-Host ""
 Write-Host "Backup completed." -ForegroundColor Green
 
+# Start containers
 Write-Host ""
 Write-Host "Starting DB Container" -ForegroundColor Yellow
 docker container start $OctopusSQLContainerName

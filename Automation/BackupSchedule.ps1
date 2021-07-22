@@ -6,6 +6,11 @@ param (
     $DockerRootDir
 )
 begin {
+    # Variables definition
+    $OctopusProjectName = "octopus"
+    $WordpressProjectName = "wp"
+    
+    # Check if Backup Location exists
     $PathExist = Test-Path -Path $DockerRootDir -ErrorAction SilentlyContinue
     if ($PathExist) {
         $ProjectsDirs = Get-ChildItem -Path $DockerRootDir -ErrorAction SilentlyContinue -ErrorVariable isEmpty
@@ -21,6 +26,7 @@ begin {
                 foreach ($BackupDirectory in $BackupDirectories) {
                     $BackupFiles = Get-ChildItem -Path $BackupDirectory -ErrorAction SilentlyContinue -ErrorVariable isEmpty
                     if(!$isEmpty){
+                        # Clear Backups older than 7 Days
                         foreach ($BackupFile in $BackupFiles) {
                             $Timespan = New-TimeSpan -days 7
                             $FolderLastWrite = $BackupFile.LastWriteTime
@@ -36,6 +42,11 @@ begin {
     }
 }
 process {
-    & "$PSScriptRoot`\Octopus Container Automation\OctopusBackup.ps1" -RootBackupLocation "$DockerRootDir\Octopus\Backups" -OctopusSQLContainerName octopus_sql_1 -OctopusWEBContainerName octopus_web_1
-    & "$PSScriptRoot`\Wordpress Container Automation\WordpressBackup.ps1" -RootBackupLocation "$DockerRootDir\Wordpress\Backups" -WordpressDBContainerName wp_sql_1 -WordpressWEBContainerName wp_web_1
+    # Call the Backup Scripts for each container
+    & "$PSScriptRoot\Octopus Container Automation\OctopusBackup.ps1"  -RootBackupLocation "$DockerRootDir\$OctopusProjectName\Backups" `
+                                                                      -OctopusSQLContainerName "$OctopusProjectName`_sql_1" `
+                                                                      -OctopusWEBContainerName "$OctopusProjectName`_web_1"
+    & "$PSScriptRoot\Wordpress Container Automation\WordpressBackup.ps1"  -RootBackupLocation "$DockerRootDir\$WordpressProjectName\Backups" `
+                                                                          -WordpressDBContainerName "$WordpressProjectName`_sql_1" `
+                                                                          -WordpressWEBContainerName "$WordpressProjectName`_web_1"
 }
