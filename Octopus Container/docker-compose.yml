@@ -2,6 +2,10 @@ version: '3'
 services:
    sql:
     image: ${SQL_IMAGE}
+    deploy:
+      resources:
+        limits:
+          cpus: 2
     environment:
       SA_PASSWORD: ${SA_PASSWORD}
       ACCEPT_EULA: ${ACCEPT_EULA}
@@ -14,8 +18,16 @@ services:
       retries: 10
     volumes:
       - sqlvolume:/var/opt/mssql
+    networks: 
+      octopus-vnet:
+        ipv4_address: 192.168.1.2
    web:
     image: octopusdeploy/octopusdeploy:${OCTOPUS_SERVER_TAG}
+    deploy:
+      resources:
+        limits:
+          cpus: 2
+          memory: 1g
     privileged: ${PRIVILEGED}
     user: ${USER}
     environment:
@@ -33,7 +45,11 @@ services:
       - 8001:8080
       - 11111:10943
     depends_on:
-      - sql
+      sql:
+        condition: service_healthy
+        condition: service_started
+    dns: 
+      - 192.168.1.1
     volumes:
       - repository:/repository
       - artifacts:/artifacts
@@ -41,6 +57,9 @@ services:
       - cache:/cache
       - import:/import
       - octopus:/Octopus
+    networks: 
+      octopus-vnet:
+        ipv4_address: 192.168.1.3
 volumes:
   repository:
   artifacts:
@@ -49,3 +68,9 @@ volumes:
   import:
   octopus:
   sqlvolume:
+networks: 
+  octopus-vnet:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.1.0/24"

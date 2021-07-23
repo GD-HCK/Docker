@@ -3,6 +3,11 @@ version: '3.1'
 services:
   web:
     image: wordpress:${WORDPRESS_IMAGE_VERSION}
+    deploy:
+      resources:
+        limits:
+          cpus: 2
+          memory: 1g
     restart: always
     ports:
       - 8002:80
@@ -17,6 +22,11 @@ services:
         - wp-vnet
   sql:
     image: ${MYSQL_IMAGE}
+    deploy:
+      resources:
+        limits:
+          cpus: 2
+          memory: 1g
     restart: always
     ports: 
         - 3306:3306
@@ -28,8 +38,7 @@ services:
     volumes:
       - sql:/var/lib/mysql
     networks: 
-        wp-vnet:
-
+      wp-vnet:
 volumes:
   web:
   sql:
