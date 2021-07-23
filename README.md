@@ -15,18 +15,18 @@
     ```
 
 ## Hard-limit resource access to WSL2
-* #### open/create the .wslconfig file
+* #### Open/create the .wslconfig file
     ```powershell
     notepad "$env:USERPROFILE/.wslconfig"
     ```
-* #### amen the file with the below content and save it
+* #### Amend the file with the below content and save it
     ```cmd
     [wsl2]
     memory=3GB   # Limits VM memory in WSL 2 up to 3GB
     processors=4 # Makes the WSL 2 VM use two virtual processors
     ```
-* #### restart docker desktop service
-* #### restart wsl2
+* #### Restart docker desktop service
+* #### Restart wsl2
     ```powershell
     wsl --shutdown
     wsl
