@@ -20,7 +20,7 @@
     notepad "$env:USERPROFILE/.wslconfig"
     ```
 * #### Amend the file with the below content and save it
-    ```cmd
+    ```
     [wsl2]
     memory=3GB   # Limits VM memory in WSL 2 up to 3GB
     processors=4 # Makes the WSL 2 VM use two virtual processors
