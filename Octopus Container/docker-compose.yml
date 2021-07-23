@@ -19,8 +19,7 @@ services:
     volumes:
       - sqlvolume:/var/opt/mssql
     networks: 
-      octopus-vnet:
-        ipv4_address: 192.168.1.2
+      - octopus-vnet
    web:
     image: octopusdeploy/octopusdeploy:${OCTOPUS_SERVER_TAG}
     deploy:
@@ -49,7 +48,7 @@ services:
         condition: service_healthy
         condition: service_started
     dns: 
-      - 192.168.1.1
+      - 192.168.1.71
     volumes:
       - repository:/repository
       - artifacts:/artifacts
@@ -59,7 +58,6 @@ services:
       - octopus:/Octopus
     networks: 
       octopus-vnet:
-        ipv4_address: 192.168.1.3
 volumes:
   repository:
   artifacts:
@@ -70,7 +68,3 @@ volumes:
   sqlvolume:
 networks: 
   octopus-vnet:
-    ipam:
-      driver: default
-      config:
-        - subnet: "192.168.1.0/24"
