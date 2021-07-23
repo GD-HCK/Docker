@@ -9,6 +9,10 @@ services:
           cpus: 2
           memory: 1g
     restart: always
+    depends_on:
+      sql:
+        condition: service_healthy
+        condition: service_started
     ports:
       - 8002:80
     environment:
