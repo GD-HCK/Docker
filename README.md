@@ -26,6 +26,10 @@
     processors=4 # Makes the WSL 2 VM use two virtual processors
     ```
 * #### Restart docker desktop service
+    ```powershell
+    # Run the below as administrator
+    Restart-Service -Name com.docker.service -Force
+    ```
 * #### Restart wsl2
     ```powershell
     wsl --shutdown

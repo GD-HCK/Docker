@@ -135,16 +135,24 @@ You can automate the below tasks by running the Powershell script [OctopusBackup
         ```
 
 3. ## Restore The Docker Composed Container
-    You can automate the below tasks by running the Powershell script [OctopusRestore.ps1](../Automation/Octopus%20Container%20Automation/OctopusRestore.ps1 "OctopusRestore.ps1") locally on the Docker server.
+    You can automate the below tasks by running the Powershell script [OctopusRestore.ps1](../Automation/Octopus%20Container%20Automation/OctopusRestore.ps1 "OctopusRestore.ps1") locally on the Docker server. I recommend specifying the variables' values within docker-compose.yml
     1. #### Create the composed container from scratch
         ```powershell
-        # Syntax: 
+        # Syntax (--env-file): 
         docker-compose --project-name $project_name --env-file ${Path_To_Env_File.env} up -d
+        # Syntax (without environment variables file): 
+        docker-compose --project-name $project_name up -d
         # Example:
         docker-compose --project-name Octopus --env-file .\octopus.env up -d
         ```
     2. #### Overwrite the content of /var/opt/mssql with the one coming from the archive
         1. #### Stop the composed container
+            ```powershell
+            # Syntax: 
+            docker-compose stop $project_name
+            # Example (Run from within the directory where docker-compose.yml is stored. Variables defines within the docker-compose.yml):
+            docker-compose stop $project_name
+            ```
         2. #### Import database data back in the volumes
             ```powershell
             # Syntax: 
@@ -171,8 +179,12 @@ You can automate the below tasks by running the Powershell script [OctopusBackup
                 }
             ```
         3. #### Start the composed container
-             * Start SQL container
-             * Start WEB container
+             ```powershell
+            # Syntax: 
+            docker-compose start $project_name
+            # Example (Run from within the directory where docker-compose.yml is stored. Variables defines within the docker-compose.yml):
+            docker-compose start $project_name
+            ```
 
 # Troubloshooting
 1. #### Check Container Resource Utilisation

@@ -130,13 +130,21 @@ You can automate the below tasks by running the Powershell script [WordpressBack
     You can automate the below tasks by running the Powershell script [WordpressRestore.ps1](../Automation/Wordpress%20Container%20Automation/WordpressRestore.ps1 "WordpressRestore.ps1") locally on the Docker server.
     1. #### Create the composed container from scratch
         ```powershell
-        # Syntax: 
+        # Syntax (--env-file): 
         docker-compose --project-name $project_name --env-file ${Path_To_Env_File.env} up -d
+        # Syntax (without environment variables file): 
+        docker-compose --project-name $project_name up -d
         # Example:
-        docker-compose --project-name Wordpress --env-file .\wordpress.env up -d
+        docker-compose --project-name Octopus --env-file .\octopus.env up -d
         ```
     2. #### Overwrite the content of /var/opt/mssql with the one coming from the archive
         1. #### Stop the composed container
+            ```powershell
+            # Syntax: 
+            docker-compose stop $project_name
+            # Example (Run from within the directory where docker-compose.yml is stored. Variables defines within the docker-compose.yml):
+            docker-compose stop $project_name
+            ```
         2. #### Import database data back in the volumes
             ```powershell
             # Syntax: 
@@ -157,8 +165,12 @@ You can automate the below tasks by running the Powershell script [WordpressBack
                        -c "rm -rf /var/www/html* && cd /var/www/html && tar xvf /backup/wordpress_web.tar ."
             ```
         3. #### Start the composed container
-             * Start SQL container
-             * Start WEB container
+            ```powershell
+            # Syntax: 
+            docker-compose start $project_name
+            # Example (Run from within the directory where docker-compose.yml is stored. Variables defines within the docker-compose.yml):
+            docker-compose start $project_name
+            ```
 
 # Troubloshooting
 1. #### Check Container Resource Utilisation
